@@ -2,10 +2,12 @@ Employer = class {
     constructor(email) {
        this.email = email
        this.jobs = []
+       this.inbox = []
     }
     // create a job, and add to jobs list
     createJobAd(title, description, zipcode, category, jobType, compensationMin, compensationMax, tips) {
         let job = new Job(title, description, zipcode, category, jobType, compensationMin, compensationMax, tips)
+        job.employer = this
         this.jobs.push(job)
     }
     // employer likes an application and wants to interview the candidate
@@ -16,6 +18,8 @@ Employer = class {
         application.job.interviews.push(interview)
         // add the interview to the job seeker's list
         application.jobSeeker.interviews.push(interview)
+        // add interview to application
+        application.interview = interview
     }
     //after interview the employer can update an application
     updateApplicationStatus(interview, status ){
@@ -66,6 +70,7 @@ Job = class {
         this.tips = tips
         this.applications = []
         this.interviews = []
+        this.employer = null
     }
 }
 
@@ -124,6 +129,7 @@ Application = class {
         this.otherSkills = otherSkills
         this.interviewAvailability = interviewAvailability
         this.status = null
+        this.interview = null
      }
 }
 
