@@ -1,0 +1,7 @@
+- rewrite classes for readability. ex: class Person {}
+- implement module pattern. move classes into their own files, export them, and require them where they are needed.
+- initialize npm so you can use packages, and use at least one package from somebody else
+    - `$ npm init`
+    - make sure you select the right license for your open source project.
+    - add a package to your project ex:  `npm i chalk`
+- add linting
