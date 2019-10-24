@@ -1,4 +1,4 @@
-Employer = class {
+class Employer {
     constructor(email) {
        this.email = email
        this.jobs = []
@@ -49,7 +49,7 @@ Employer = class {
     }
 }
 
-Notification = class {
+class Notification {
     constructor(message, time, application) {
         this.message = message
         this.time = time
@@ -58,7 +58,7 @@ Notification = class {
     }
 }
 
-Job = class {
+class Job {
     constructor(title, description, zipcode, category, jobType, compensationMin, compensationMax, tips) {
         this.title = title
         this.description = description
@@ -74,7 +74,7 @@ Job = class {
     }
 }
 
-Interview = class {
+class Interview {
      constructor(application, option1, option2, option3){
          this.job = application.job
          this.application = application
@@ -86,7 +86,7 @@ Interview = class {
      }
 }
 
-JobSeeker = class {
+class JobSeeker {
     constructor(name, email) {
         this.name = name
         this.email = email
@@ -119,7 +119,7 @@ JobSeeker = class {
         
 }
 
-Application = class {
+class Application {
     // extend application to also receive a resume at some point
      constructor(job, yearsOfExperience, languagesSpoken, otherSkills, interviewAvailability, jobSeeker) {
         this.job = job 
