@@ -1,2 +1,8 @@
 .vscode/
 lecture/week-02/node_modules
+application.json
+employer.json
+interview.json
+job.json
+jobSeeker.json
+notification.json
