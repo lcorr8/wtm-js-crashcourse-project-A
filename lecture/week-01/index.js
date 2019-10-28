@@ -26,19 +26,19 @@ class Employer {
         //if application status is accepted
         if (status === "accepted") {
             // send notification to job seeker that they have been hired
-            var notification = new Notification('You have been hired! see your application here (eventually)', new Date(), interview.application)
+            const notification = new Notification('You have been hired! see your application here (eventually)', new Date(), interview.application)
             interview.jobSeeker.inbox.push(notification)
             // decline all other applications for the job
             // we loop through all job applications except the current one
-            var allApplications = interview.job.applications
-            var acceptedApplication = interview.application
-            var notAcceptedApplications = allApplications.filter(function(application) { return application !== acceptedApplication});
+            const allApplications = interview.job.applications
+            const acceptedApplication = interview.application
+            const notAcceptedApplications = allApplications.filter(function(application) { return application !== acceptedApplication});
             
             notAcceptedApplications.forEach(function(application) {
                 //update their status to declined
                 application.status = "declined"
                 //send them some sort of notification
-                var declineNotification = new Notification('This position has been filled. Thank you for your application.', new Date(), application)
+                const declineNotification = new Notification('This position has been filled. Thank you for your application.', new Date(), application)
                 application.jobSeeker.inbox.push(declineNotification)
             });
 
@@ -98,7 +98,7 @@ class JobSeeker {
     // job seeker can apply to a job
     apply(job, yearsOfExperience, languagesSpoken, otherSkills, interviewAvailability) {
         //create application to the job
-        var application = new Application(job, yearsOfExperience, languagesSpoken, otherSkills, interviewAvailability)
+        const application = new Application(job, yearsOfExperience, languagesSpoken, otherSkills, interviewAvailability)
         // add jobseeker to the application
         application.jobSeeker = this
         // add application to the job seekers applications list

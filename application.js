@@ -1,5 +1,6 @@
 module.exports = class Application {
   // TODO: extend application to also receive a resume at some point
+  // eslint-disable-next-line max-len
   constructor(job, yearsOfExperience, languagesSpoken, otherSkills, interviewAvailability, jobSeeker) {
     this.job = job;
     this.jobSeeker = jobSeeker;
@@ -20,4 +21,4 @@ function makeCounter() {
   };
 }
 
-var id = makeCounter();
+const id = makeCounter();

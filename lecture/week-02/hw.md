@@ -10,6 +10,6 @@
 - :white_check_mark: and use at least one package from somebody else
  
     - add a package to your project ex:  `npm i chalk`
-- add linting
-- fix suggestions from week 1
+- :white_check_mark: add linting
+- :white_check_mark: fix suggestions from week 1
     - use of const over var and if the variable should not be a constant use let
