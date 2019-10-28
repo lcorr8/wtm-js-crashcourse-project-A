@@ -7,8 +7,8 @@
 - :white_check_mark: initialize npm so you can use packages, 
     - - `$ npm init`
     - make sure you select the right license for your open source project.
-- and use at least one package from somebody else
-    
+- :white_check_mark: and use at least one package from somebody else
+ 
     - add a package to your project ex:  `npm i chalk`
 - add linting
 - fix suggestions from week 1
