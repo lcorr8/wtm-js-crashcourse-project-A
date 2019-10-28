@@ -1,0 +1,5 @@
+.vscode
+lecture/week-02/node_modules
+/node_modules
+package-lock.json
+lecture
