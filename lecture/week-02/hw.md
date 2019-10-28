@@ -1,5 +1,9 @@
 - rewrite classes for readability. ex: class Person {} :white_check_mark:
-- implement module pattern. move classes into their own files, export them, and require them where they are needed.
+- implement module pattern. move classes into their own files, export them, and require them where they are needed. :white_check_mark:
+    - remove circular references
+        - job: applications interviews,
+        - jobseeker: applications, interviews, notifications
+    - make sure database saves more than one entry without rewriting the same entry && you dont get an array within an array.
 - initialize npm so you can use packages, and use at least one package from somebody else
     - `$ npm init`
     - make sure you select the right license for your open source project.
