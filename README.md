@@ -1,4 +1,5 @@
 # wtm-js-crashcourse-project-A
+project for [WTM JS Crash Course](https://github.com/WTMBerlin/jscc2019)
 ## Job application service
 
 #### Classes
@@ -52,3 +53,8 @@ Interview
 Notification
 - has a message, a time stamp, and the related application
 - can be sent to an inbox (job seeker, employer)
+
+
+### Reference links:
+- [Welcome guide](https://github.com/WTMBerlin/jscc-welcomeguide) for JS Crashcourse
+- [WTM Berlin](http://wtmberlin.com/)
