@@ -1,24 +1,23 @@
-const Database = require('./database')
+const Database = require('./database');
 
 module.exports = class Notification {
-    constructor(message, time, applicationId) {
-        this.message = message
-        this.time = time
-        this.applicationId = applicationId
-        this.opened = false
-        this.id = id()
+  constructor(message, time, applicationId) {
+    this.message = message;
+    this.time = time;
+    this.applicationId = applicationId;
+    this.opened = false;
+    this.id = id();
 
-        Database.save('notification.json', this)
-
-    }
-}
+    Database.save('notification.json', this);
+  }
+};
 
 function makeCounter() {
-    var i = 0;
+  let i = 0;
 
-    return function (){
-        return i++;
-    }
+  return function () {
+    return i++;
+  };
 }
 
-var id = makeCounter();
+let id = makeCounter();
