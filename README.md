@@ -1,7 +1,7 @@
 # wtm-js-crashcourse-project-A
 ## Job application service
 
-#### classes
+#### Classes
 - employer
 - job ad
 - interview
@@ -9,7 +9,7 @@
 - application
 - notification
 
-#### interactions
+#### Attributes & Interactions
 Employer
 - has an email, and many job ads
 - can create job ads
