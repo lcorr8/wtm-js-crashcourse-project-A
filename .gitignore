@@ -6,3 +6,5 @@ interview.json
 job.json
 jobSeeker.json
 notification.json
+/node_modules
+package-lock.json

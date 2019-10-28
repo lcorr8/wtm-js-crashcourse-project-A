@@ -1,0 +1,24 @@
+{
+  "name": "wtm-js-crashcourse-project-a",
+  "version": "1.0.0",
+  "description": "Job Application Service",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lcorr8/wtm-js-crashcourse-project-A.git"
+  },
+  "author": "LCorr",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/lcorr8/wtm-js-crashcourse-project-A/issues"
+  },
+  "homepage": "https://github.com/lcorr8/wtm-js-crashcourse-project-A#readme",
+  "devDependencies": {
+    "eslint": "^6.6.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2"
+  }
+}
