@@ -15,7 +15,7 @@ module.exports = class JobSeeker {
   }
 
   // job seeker can apply to a job
-  apply(job, yearsOfExperience, languagesSpoken, otherSkills, interviewAvailability) {
+  submitApplication(job, yearsOfExperience, languagesSpoken, otherSkills, interviewAvailability) {
     // create application to the job
     // eslint-disable-next-line max-len
     const application = new Application(job, yearsOfExperience, languagesSpoken, otherSkills, interviewAvailability);

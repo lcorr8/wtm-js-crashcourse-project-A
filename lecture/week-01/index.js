@@ -96,7 +96,7 @@ class JobSeeker {
         this.inbox = []
     }
     // job seeker can apply to a job
-    apply(job, yearsOfExperience, languagesSpoken, otherSkills, interviewAvailability) {
+    submitApplication(job, yearsOfExperience, languagesSpoken, otherSkills, interviewAvailability) {
         //create application to the job
         const application = new Application(job, yearsOfExperience, languagesSpoken, otherSkills, interviewAvailability)
         // add jobseeker to the application
@@ -140,18 +140,18 @@ em1.createJobAd("Waiter wanted", "Waiter to work in a cafe", "10117", "floor", "
 job1 = em1.jobs[0]
 
 js1 = new JobSeeker("Tom", "tom@email.com")
-js1.apply(job1, 4, "English and Spanish", "Social media skills", "weekdays 9-11 am, and any time on weekends")
+js1.submitApplication(job1, 4, "English and Spanish", "Social media skills", "weekdays 9-11 am, and any time on weekends")
 // console.log("both employer job and seeker account for the application")
 // console.log(js1.applications[0])
 // console.log(em1.jobs[0].applications[0])
 ap1 = em1.jobs[0].applications[0]
 
 js2 = new JobSeeker("Thalia", "thalia@email.com")
-js2.apply(job1, 10, "German, English and French", "Kitchen management skills", "anytime")
+js2.submitApplication(job1, 10, "German, English and French", "Kitchen management skills", "anytime")
 ap2 = em1.jobs[0].applications[1]
 
 js3 = new JobSeeker("Tintin", "tintin@email.com")
-js3.apply(job1, 2, "German, English", "bar license", "anytime")
+js3.submitApplication(job1, 2, "German, English", "bar license", "anytime")
 ap3 = em1.jobs[0].applications[2]
 
 // employer likes an application and offers an interview
