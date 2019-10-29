@@ -1,13 +1,11 @@
 const Database = require('./database');
 
 module.exports = class Interview {
-  constructor(application, option1, option2, option3) {
+  constructor(application, scheduleOptions) {
     this.job = application.job;
     this.application = application;
     this.jobSeeker = application.jobSeeker;
-    this.option1 = option1;
-    this.option2 = option2;
-    this.option3 = option3;
+    this.scheduleOptions = scheduleOptions;
     this.finalInterviewSlot = null;
     this.id = id();
 

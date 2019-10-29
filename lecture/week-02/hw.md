@@ -17,8 +17,8 @@
 
 # Revision suggestions
 
-1. include package-lock.json file
-2. update variable names to be more understandable/explicit. (use full names)
-3. implement `moment.js` or use `Date`
-4. oh yeah…i guess i was thinking i’ll only give them 3 options so they don’t go back and forth a million times trying to schedule something. use array in a single attribute for interview time options
-5. update `apply` to `submitApplication`
+1. :white_check_mark: Include package-lock.json file
+2. :white_check_mark: Update variable names to be more understandable/explicit. (use full names)
+3. :white_check_mark: Implement `moment.js` or use `Date`
+4. :white_check_mark: Use array in a single attribute for interview time options
+5. :white_check_mark: update `apply` to `submitApplication`
