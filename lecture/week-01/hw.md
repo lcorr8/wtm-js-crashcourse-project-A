@@ -1,8 +1,6 @@
-# WTM-js-crashcourse-project-A
-project for [WTM JS Crash Course](https://github.com/WTMBerlin/jscc2019)
-## Job application service
+## Job application service.
 
-#### Classes
+#### classes
 - employer
 - job ad
 - interview
@@ -10,7 +8,7 @@ project for [WTM JS Crash Course](https://github.com/WTMBerlin/jscc2019)
 - application
 - notification
 
-#### Attributes & Interactions
+#### interactions
 Employer
 - has an email, and many job ads
 - can create job ads
@@ -37,7 +35,7 @@ Job Ad
 - has an owner (employer)
 - has various interviews
 - has many job seekers via applications
-- [TODO] job ad should be deleted after a position has been filled?
+- [TODO] job ad should be deleted after a position has been filled
 
 Application
 - has a job ad, and a job seeker, years of experience, languages spoken, other skills, interview availability, status (declined, maybe, accepted)
@@ -47,14 +45,18 @@ Application
 Interview
 - has application, and a job
 - has a optional time slots for the job seeker to accept (basic scheduling)
-- has a final time and a [TODO]place?
-- has an employer and job seeker via application
+- has a final time and a [TODO]place
+- has a employer and job seeker via application
 
 Notification
 - has a message, a time stamp, and the related application
 - can be sent to an inbox (job seeker, employer)
 
 
-### Reference links:
-- [Welcome guide](https://github.com/WTMBerlin/jscc-welcomeguide) for JS Crashcourse
-- [WTM Berlin](http://wtmberlin.com/)
+## Homework for week 1
+
+1) Create a GitHub account :white_check_mark:
+2) Come up with your very own project idea that you will build throughout the course (you can change this afterwards) :white_check_mark:
+3) Create at least 2 different classes and several instances for these classes for your projects :white_check_mark:
+4) create at least 3 different interactions between said classes :white_check_mark:
+5) Publish your code as an `index.js` file to your GitHub account :white_check_mark:
