@@ -1,4 +1,4 @@
-# wtm-js-crashcourse-project-A
+# WTM-js-crashcourse-project-A
 project for [WTM JS Crash Course](https://github.com/WTMBerlin/jscc2019)
 ## Job application service
 
