@@ -1,4 +1,3 @@
-const Database = require('./database');
 
 module.exports = class Interview {
   constructor(application, scheduleOptions) {
@@ -8,8 +7,10 @@ module.exports = class Interview {
     this.scheduleOptions = scheduleOptions;
     this.finalInterviewSlot = null;
     this.id = id();
+  }
 
-    Database.save('interview.json', this);
+  static create(application, scheduleOptions) {
+    return new Interview(application, scheduleOptions);
   }
 };
 

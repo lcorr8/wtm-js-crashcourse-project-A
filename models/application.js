@@ -12,6 +12,14 @@ module.exports = class Application {
     this.interview = null;
     this.id = id();
   }
+
+  static create(
+    job, yearsOfExperience, languagesSpoken, otherSkills, interviewAvailability, jobSeeker,
+  ) {
+    return new Application(
+      job, yearsOfExperience, languagesSpoken, otherSkills, interviewAvailability, jobSeeker,
+    );
+  }
 };
 // TODO: abstract id functionality into a helper function?
 function makeCounter() {

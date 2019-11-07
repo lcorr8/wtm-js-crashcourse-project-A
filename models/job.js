@@ -1,6 +1,6 @@
 module.exports = class Job {
   // eslint-disable-next-line max-len
-  constructor(title, description, zipcode, category, jobType, compensationMin, compensationMax, tips) {
+  constructor(title, description, zipcode, category, jobType, compensationMin, compensationMax, tips, employer) {
     this.title = title;
     this.description = description;
     this.zipcode = zipcode;
@@ -11,8 +11,18 @@ module.exports = class Job {
     this.tips = tips;
     this.applications = [];
     this.interviews = [];
-    this.employer = null;
+    this.employer = employer;
     this.id = id();
+  }
+
+  static create(
+    title, description, zipcode, category, jobType,
+    compensationMin, compensationMax, tips, employer,
+  ) {
+    return new Job(
+      title, description, zipcode, category, jobType,
+      compensationMin, compensationMax, tips, employer,
+    );
   }
 };
 

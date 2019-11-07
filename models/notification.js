@@ -1,4 +1,3 @@
-const Database = require('./database');
 
 module.exports = class Notification {
   constructor(message, time, applicationId) {
@@ -7,8 +6,10 @@ module.exports = class Notification {
     this.applicationId = applicationId;
     this.opened = false;
     this.id = id();
+  }
 
-    Database.save('notification.json', this);
+  static create(message, time, applicationId) {
+    return new Notification(message, time, applicationId);
   }
 };
 
