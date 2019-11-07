@@ -23,13 +23,13 @@ add pug index and details views for models
     
 :white_check_mark:add `app.set('view engine', 'pug')` in order to be able to set express to use pug views.
 
-connect http get requests for each route to display all  and individual model instances.
+:white_check_mark: connect http get requests for each route to display all  and individual model instances.
 
-create a post request to add entries in db
+:white_check_mark: create a post request to add entries in db
 
-create a put request to edit an entry in db
+:white_check_mark: create a put request to edit an entry in db
 
-create a delete request to delete instances in the db
+:white_check_mark: create a delete request to delete instances in the db
 
 
 --> read on url query params
