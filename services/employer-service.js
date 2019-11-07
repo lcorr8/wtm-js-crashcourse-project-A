@@ -3,10 +3,6 @@ const EmployerModel = require('../models/employer');
 
 module.exports = class EmployerService extends BaseService {
   constructor() {
-    super(EmployerModel, `${__dirname}/../employer-database.json`);
+    super(EmployerModel);
   }
-
-  // async declineOtherApplications(){
-
-  // }
 };

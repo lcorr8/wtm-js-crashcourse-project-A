@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
-
-const AutoIncrement = require('mongoose-sequence'(mongoose));
+// const AutoIncrement = require('mongoose-sequence')(mongoose);
 
 const NotificationSchema = mongoose.Schema({
   message: String,

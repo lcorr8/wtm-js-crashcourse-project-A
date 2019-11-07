@@ -1,54 +1,83 @@
 /* eslint-disable no-console */
+
 const express = require('express');
 
 const app = express();
+const bodyParser = require('body-parser');
+const axios = require('axios').default;
+const EmployerService = require('./services/employer-service');
+const NotificationModel = require('./models/notification');
 
 require('./database-connection');
 
-const EmployerService = require('./services/employer-service');
-
-
 app.set('view engine', 'pug');
+app.use(bodyParser.json());
 
-app.listen(3000, () => {
-  console.log('did i work?');
-});
 
 app.get('/', (req, res) => {
-  // res.send(`${__dirname}/views/index.pug`);
-  // to send multiple pug templates use the render function
-  // res.render(`${__dirname}/views/layout.pug`);
   res.render('index');
 });
 
 app.get('/employer/all', async (req, res) => {
-  // const employers = await EmployerService.findAll();
-  const employers = [{ name: 'lola' }, { name: 'adam' }];
-  // res.send(employers);
-  res.render('employers', { employers });
+  const employers = EmployerService.findAll();
+  // const employers = [{ name: 'lola' }, { name: 'adam' }];
+  res.send(employers);
+  // res.render('employers', { employers });
 });
 
 app.get('/employer/:id', async (req, res) => {
-  const person = await EmployerService.find(req.params.id);
-
-  res.render('person', { person });
+  const employer = await EmployerService.find(req.params.id);
+  res.send(employer);
+  // res.render('employer', { employer });
 });
 
-app.post('/employer/', async (req, res) => {
-  const person = EmployerService.add(req.body);
-  res.send(person);
-  console.log(req.body);
-  // res.render('person', {person});
+app.post('/employer', async (req, res) => {
+  const employer = await EmployerService.add(req.body);
+  res.send(employer);
+  // console.log(req.body);
 });
 
 app.put('/employer/:id', async (req, res) => {
-  const person = EmployerService.updateObject(req.params.id, req.body);
-  res.send(person);
+  const employer = EmployerService.updateObject(req.params.id, req.body);
+  res.send(employer);
   console.log(req.body);
 });
 
 app.delete('/employer/:id', async (req, res) => {
-  const person = EmployerService.del(req.params.id);
-  res.send(person);
+  const employer = EmployerService.del(req.params.id);
+  res.send(employer);
   console.log(req.body);
+});
+
+// -------------------------------------Notification Endpoints --------------------------------
+app.get('/notification/all', async (req, res) => {
+  const notifications = await NotificationModel.find(); // works
+  // res.send(notifications);
+  res.render('notifications', { notifications });
+});
+
+app.get('/notification/:id', async (req, res) => {
+  // req.params.id
+  const notification = await NotificationModel.find({ _id: req.params.id }); // works
+  // res.send(notification)
+  res.render('notification', { notification });
+});
+
+app.post('/notification', async (req, res) => {
+  const notification = await NotificationModel.create(req.body); // works
+  // const notification = await NotificationModel.add(req.body); // throws error even if i define async function in notification service file: UnhandledPromiseRejectionWarning: TypeError: NotificationModel.add is not a function
+  // const notification = await NotificationModel.add(req.body); // throws error even if i define async function in base service file as well: UnhandledPromiseRejectionWarning: TypeError: NotificationModel.add is not a function
+  res.send(notification);
+  // console.log(req.body);
+});
+
+app.delete('/notification/:id', async (req, res) => {
+  const notification = await NotificationModel.remove({ _id: req.params.id }); // works
+  res.send(notification);
+});
+
+// -------------------------------------Listen --------------------------------
+
+app.listen(3000, () => {
+  console.log('did i work?');
 });
