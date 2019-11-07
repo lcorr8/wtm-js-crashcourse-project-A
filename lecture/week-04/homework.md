@@ -1,7 +1,7 @@
 
-install npm packages: express, nodemon, pug, body-parser, axios,
+:white_check_mark: install npm packages: express, nodemon, pug, body-parser, axios,
 
-to use express:
+:white_check_mark: to use express:
     
     const express = require('express')
     const app = express()
@@ -18,11 +18,12 @@ to use express:
         res.render('index')
     })
 
-make views folder
+:white_check_mark: make views folder
 add pug index and details views for models
     
-add `app.set('view engine', 'pug')` in order to be able to set express to use pug views.
-write http get requests for each route to display all people, all posts, individual person, an individual post.
+:white_check_mark:add `app.set('view engine', 'pug')` in order to be able to set express to use pug views.
+
+connect http get requests for each route to display all  and individual model instances.
 
 create a post request to add entries in db
 
