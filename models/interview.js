@@ -1,24 +1,25 @@
+const mongoose = require('mongoose');
+const AutoIncrement = require('mongoose-sequence')(mongoose);
 
-module.exports = class Interview {
-  constructor(application, scheduleOptions) {
-    this.job = application.job;
-    this.application = application;
-    this.jobSeeker = application.jobSeeker;
-    this.scheduleOptions = scheduleOptions;
-    this.finalInterviewSlot = null;
-    this.id = id();
-  }
+const InterviewSchema = mongoose.Schema({
+  job: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Job',
+  },
+  application: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Application',
+  },
+  jobSeeker: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'JobSeeker',
+  },
+  scheduleOptions: [{
+    type: Date,
+  }],
+  finalInterviewSlot: Date,
+});
 
-  static create(application, scheduleOptions) {
-    return new Interview(application, scheduleOptions);
-  }
-};
+// InterviewSchema.plugin(AutoIncrement, {incl_field: 'id'});
 
-function makeCounter() {
-  let i = 0;
-  return function () {
-    return i++;
-  };
-}
-
-var id = makeCounter();
+module.exports = mongoose.model('Interview', InterviewSchema);

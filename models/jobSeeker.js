@@ -1,24 +1,27 @@
-module.exports = class JobSeeker {
-  constructor(name, email) {
-    this.name = name;
-    this.email = email;
-    this.applications = [];
-    this.resumes = [];
-    this.interviews = [];
-    this.inbox = [];
-    this.id = id();
-  }
+const mongoose = require('mongoose');
+const AutoIncrement = require('mongoose-sequence')(mongoose);
 
-  static create(name, email) {
-    return new JobSeeker(name, email);
-  }
-};
+const JobSeekerSchema = mongoose.Schema({
+  name: String,
+  email: String,
+  applications: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Application',
+  }],
+  resumes: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Resume',
+  }],
+  interviews: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Interview',
+  }],
+  inbox: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Notification',
+  }],
+});
 
-function makeCounter() {
-  let i = 0;
-  return function () {
-    return i++;
-  };
-}
+// JobSeekerSchema.plugin(AutoIncrement, {inc_field: 'id'});
 
-const id = makeCounter();
+module.exports = mongoose.model('JobSeeker', JobSeekerSchema);
