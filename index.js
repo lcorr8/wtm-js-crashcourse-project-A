@@ -3,6 +3,8 @@ const express = require('express');
 
 const app = express();
 
+require('./database-connection');
+
 const EmployerService = require('./services/employer-service');
 
 
@@ -20,8 +22,10 @@ app.get('/', (req, res) => {
 });
 
 app.get('/employer/all', async (req, res) => {
-  const people = await EmployerService.findAll();
-  res.render('people', { people });
+  // const employers = await EmployerService.findAll();
+  const employers = [{ name: 'lola' }, { name: 'adam' }];
+  // res.send(employers);
+  res.render('employers', { employers });
 });
 
 app.get('/employer/:id', async (req, res) => {
