@@ -18,33 +18,33 @@ app.get('/', (req, res) => {
   res.render('index');
 });
 
+// -------------------------------------Notification Endpoints --------------------------------
 app.get('/employer/all', async (req, res) => {
-  const employers = EmployerService.findAll();
-  // const employers = [{ name: 'lola' }, { name: 'adam' }];
-  res.send(employers);
-  // res.render('employers', { employers });
+  const employers = await EmployerService.findAll();
+  // res.send(employers);
+  res.render('employers', { employers });
 });
 
 app.get('/employer/:id', async (req, res) => {
-  const employer = await EmployerService.find(req.params.id);
-  res.send(employer);
-  // res.render('employer', { employer });
+  const employer = await EmployerService.find({ _id: req.params.id });
+  // res.send(employer);
+  res.render('employer', { employer });
 });
-
+// create new
 app.post('/employer', async (req, res) => {
   const employer = await EmployerService.add(req.body);
   res.send(employer);
-  // console.log(req.body);
+  console.log(req.body);
 });
-
+// update
 app.put('/employer/:id', async (req, res) => {
-  const employer = EmployerService.updateObject(req.params.id, req.body);
+  const employer = await EmployerService.updateOne(req.params.id, req.body);
   res.send(employer);
   console.log(req.body);
 });
 
 app.delete('/employer/:id', async (req, res) => {
-  const employer = EmployerService.del(req.params.id);
+  const employer = await EmployerService.deleteOne({ _id: req.params.id });
   res.send(employer);
   console.log(req.body);
 });
