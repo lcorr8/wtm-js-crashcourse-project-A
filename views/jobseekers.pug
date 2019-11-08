@@ -1,0 +1,22 @@
+extends layout
+
+block content
+    h1 JobSeekers
+    if jobseekers.length
+        p Here are the jobseekers:
+        table
+            thead
+                td _ID
+                td name
+                td email
+            each jobseeker in jobseekers
+                tr
+                    td #{jobseeker._id}
+                    td #{jobseeker.name}
+                    td #{jobseeker.email}
+
+        pre= JSON.stringify(people, null, 2)
+    else
+        p There's no one yet :(
+    script.
+        console.log(!{JSON.stringify(jobseekers)})

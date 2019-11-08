@@ -20,6 +20,6 @@ module.exports = class Service {
   }
 
   async updateOne(id, options) {
-    return this.model.findOneAndUpdate(id, options, { new: true });
+    return this.model.findOneAndUpdate(id, options, { new: true, useFindAndModify: false });
   }
 };

@@ -6,22 +6,38 @@ const ApplicationSchema = mongoose.Schema({
   job: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Job',
+    required: true,
   },
   jobSeeker: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'JobSeeker',
+    required: true,
   },
   yearsOfExperience: {
     type: Number,
+    required: true,
   },
-  languagesSpoken: String,
+  languagesSpoken: {
+    type: String,
+    required: true,
+  },
   otherSkills: String,
-  interviewAvailability: String,
-  status: String,
+  interviewAvailability: {
+    type: String,
+    required: true,
+  },
+  status: {
+    type: String,
+    enum: ['accepted', 'maybe', 'declined'],
+  },
   interview: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Interview',
   },
+  // resume: {
+  //   type: ,
+  //   data: ,
+  // }
 });
 
 // ApplicationSchema.plugin(AutoIncrement, { inc_field: 'id' });

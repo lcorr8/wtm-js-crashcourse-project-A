@@ -2,8 +2,14 @@ const mongoose = require('mongoose');
 // const AutoIncrement = require('mongoose-sequence')(mongoose);
 
 const JobSeekerSchema = mongoose.Schema({
-  name: String,
-  email: String,
+  name: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+  },
   applications: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Application',
