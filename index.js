@@ -6,7 +6,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const axios = require('axios').default;
 const EmployerService = require('./services/employer-service');
-const NotificationModel = require('./models/notification');
+const NotificationService = require('./services/notification-service');
 
 require('./database-connection');
 
@@ -18,7 +18,7 @@ app.get('/', (req, res) => {
   res.render('index');
 });
 
-// -------------------------------------Notification Endpoints --------------------------------
+// -------------------------------------Employer Endpoints --------------------------------
 app.get('/employer/all', async (req, res) => {
   const employers = await EmployerService.findAll();
   // res.send(employers);
@@ -51,28 +51,31 @@ app.delete('/employer/:id', async (req, res) => {
 
 // -------------------------------------Notification Endpoints --------------------------------
 app.get('/notification/all', async (req, res) => {
-  const notifications = await NotificationModel.find(); // works
+  const notifications = await NotificationService.findAll();
   // res.send(notifications);
   res.render('notifications', { notifications });
 });
 
 app.get('/notification/:id', async (req, res) => {
-  // req.params.id
-  const notification = await NotificationModel.find({ _id: req.params.id }); // works
+  const notification = await NotificationService.find({ _id: req.params.id });
   // res.send(notification)
   res.render('notification', { notification });
 });
 
 app.post('/notification', async (req, res) => {
-  const notification = await NotificationModel.create(req.body); // works
-  // const notification = await NotificationModel.add(req.body); // throws error even if i define async function in notification service file: UnhandledPromiseRejectionWarning: TypeError: NotificationModel.add is not a function
-  // const notification = await NotificationModel.add(req.body); // throws error even if i define async function in base service file as well: UnhandledPromiseRejectionWarning: TypeError: NotificationModel.add is not a function
+  const notification = await NotificationService.add(req.body);
   res.send(notification);
-  // console.log(req.body);
+  console.log(req.body);
+});
+
+app.put('/notification/:id', async (req, res) => {
+  const notification = await NotificationService.updateOne(req.params.id, req.body);
+  res.send(notification);
+  console.log(req.body);
 });
 
 app.delete('/notification/:id', async (req, res) => {
-  const notification = await NotificationModel.remove({ _id: req.params.id }); // works
+  const notification = await NotificationService.deleteOne({ _id: req.params.id }); // works
   res.send(notification);
 });
 

@@ -36,6 +36,6 @@ add pug index and details views for models
 
 Sample axios requests
 axios.get('http://localhost:3000/people/all')
-axios.post('/person', {name: 'lola', age: '30'}).then(console.log)
-axios.delete('/person/3').then((res => console.log(res.data)))
-axios.post('/person/:id/follow', {targetId: 2}).then(res => console.log(res.data))
+axios.post('/employer', {email: "email 3...", id: 3}).then(console.log)axios.delete('/person/3').then((res => console.log(res.data)))
+axios.put('/employer/5dc57b75c88a00e5aed4ac64', {email: "email 1..."}).then(console.log)
+axios.delete('/employer/5dc5800d1bb3f7e77aee0246').then(console.log)
