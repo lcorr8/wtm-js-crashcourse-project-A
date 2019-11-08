@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const AutoIncrement = require('mongoose-sequence')(mongoose);
+// const AutoIncrement = require('mongoose-sequence')(mongoose);
 
 const JobSchema = mongoose.Schema({
   title: String,

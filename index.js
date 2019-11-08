@@ -8,6 +8,7 @@ const axios = require('axios').default;
 const EmployerService = require('./services/employer-service');
 const NotificationService = require('./services/notification-service');
 const ApplicationService = require('./services/application-service');
+const InterviewService = require('./services/interview-service');
 
 require('./database-connection');
 
@@ -80,7 +81,6 @@ app.delete('/notification/:id', async (req, res) => {
   res.send(notification);
 });
 
-
 // -------------------------------------Application Endpoints --------------------------------
 app.get('/application/all', async (req, res) => {
   const applications = await ApplicationService.findAll();
@@ -109,6 +109,36 @@ app.put('/application/:id', async (req, res) => {
 app.delete('/application/:id', async (req, res) => {
   const application = await ApplicationService.deleteOne({ _id: req.params.id });
   res.send(application);
+});
+
+// -------------------------------------Interview Endpoints --------------------------------
+app.get('/interview/all', async (req, res) => {
+  const interviews = await InterviewService.findAll();
+  // res.send(interviews);
+  res.render('interviews', { interviews });
+});
+
+app.get('/interview/:id', async (req, res) => {
+  const interview = await InterviewService.find({ _id: req.params.id });
+  // res.send(interview)
+  res.render('interview', { interview });
+});
+
+app.post('/interview', async (req, res) => {
+  const interview = await InterviewService.add(req.body);
+  res.send(interview);
+  console.log(req.body);
+});
+
+app.put('/interview/:id', async (req, res) => {
+  const interview = await InterviewService.updateOne(req.params.id, req.body);
+  res.send(interview);
+  console.log(req.body);
+});
+
+app.delete('/interview/:id', async (req, res) => {
+  const interview = await InterviewService.deleteOne({ _id: req.params.id });
+  res.send(interview);
 });
 
 // -------------------------------------Listen --------------------------------
