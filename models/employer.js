@@ -1,21 +1,20 @@
-module.exports = class Employer {
-  constructor(email) {
-    this.email = email;
-    this.jobs = [];
-    this.inbox = [];
-    this.id = id();
-  }
+const mongoose = require('mongoose');
+// const AutoIncrement = require('mongoose-sequence')(mongoose);
 
-  static create(email) {
-    return new Employer(email);
-  }
-};
+// define schema
+const EmployerSchema = mongoose.Schema({
+  jobs: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Job',
+  }],
+  inbox: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Notification',
+  }],
+  email: String,
+});
 
-function makeCounter() {
-  let i = 0;
-  return function () {
-    return i++;
-  };
-}
+// EmployerSchema.plugin(AutoIncrement, { inc_field: 'id' });
 
-const id = makeCounter();
+// define model
+module.exports = mongoose.model('Employer', EmployerSchema);

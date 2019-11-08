@@ -1,0 +1,20 @@
+extends layout
+
+block content
+    h1 Employers
+    if employers.length
+        p Here are the employers:
+        table
+            thead
+                td _ID
+                td Email
+            each employer in employers
+                tr
+                    td #{employer._id}
+                    td #{employer.email}
+
+        pre= JSON.stringify(people, null, 2)
+    else
+        p There's no one yet :(
+    script.
+        console.log(!{JSON.stringify(employers)})

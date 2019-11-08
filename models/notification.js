@@ -1,24 +1,16 @@
+const mongoose = require('mongoose');
+// const AutoIncrement = require('mongoose-sequence')(mongoose);
 
-module.exports = class Notification {
-  constructor(message, time, applicationId) {
-    this.message = message;
-    this.time = time;
-    this.applicationId = applicationId;
-    this.opened = false;
-    this.id = id();
-  }
+const NotificationSchema = mongoose.Schema({
+  message: String,
+  time: Date,
+  application: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Application',
+  },
+  opened: Boolean,
+});
 
-  static create(message, time, applicationId) {
-    return new Notification(message, time, applicationId);
-  }
-};
+// NotificationSchema.plugin(AutoIncrement, {inc_field: 'id});
 
-function makeCounter() {
-  let i = 0;
-
-  return function () {
-    return i++;
-  };
-}
-
-let id = makeCounter();
+module.exports = mongoose.model('Notification', NotificationSchema);

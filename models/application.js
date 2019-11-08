@@ -1,32 +1,30 @@
-module.exports = class Application {
-  // TODO: extend application to also receive a resume at some point
-  // eslint-disable-next-line max-len
-  constructor(job, yearsOfExperience, languagesSpoken, otherSkills, interviewAvailability, jobSeeker) {
-    this.job = job;
-    this.jobSeeker = jobSeeker;
-    this.yearsOfExperience = yearsOfExperience;
-    this.languagesSpoken = languagesSpoken;
-    this.otherSkills = otherSkills;
-    this.interviewAvailability = interviewAvailability;
-    this.status = null;
-    this.interview = null;
-    this.id = id();
-  }
+const mongoose = require('mongoose');
+const AutoIncrement = require('mongoose-sequence')(mongoose);
 
-  static create(
-    job, yearsOfExperience, languagesSpoken, otherSkills, interviewAvailability, jobSeeker,
-  ) {
-    return new Application(
-      job, yearsOfExperience, languagesSpoken, otherSkills, interviewAvailability, jobSeeker,
-    );
-  }
-};
-// TODO: abstract id functionality into a helper function?
-function makeCounter() {
-  let i = 0;
-  return function () {
-    return i++;
-  };
-}
+// define schema
+const ApplicationSchema = mongoose.Schema({
+  job: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Job',
+  },
+  jobSeeker: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'JobSeeker',
+  },
+  yearsOfExperience: {
+    type: Number,
+  },
+  languagesSpoken: String,
+  otherSkills: String,
+  interviewAvailability: String,
+  status: String,
+  interview: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Interview',
+  },
+});
 
-const id = makeCounter();
+// ApplicationSchema.plugin(AutoIncrement, { inc_field: 'id' });
+
+// define model
+module.exports = mongoose.model('Application', ApplicationSchema);

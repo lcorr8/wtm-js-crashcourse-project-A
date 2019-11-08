@@ -1,36 +1,29 @@
-module.exports = class Job {
-  // eslint-disable-next-line max-len
-  constructor(title, description, zipcode, category, jobType, compensationMin, compensationMax, tips, employer) {
-    this.title = title;
-    this.description = description;
-    this.zipcode = zipcode;
-    this.category = category;
-    this.jobType = jobType;
-    this.compensationMin = compensationMin;
-    this.compensationMax = compensationMax;
-    this.tips = tips;
-    this.applications = [];
-    this.interviews = [];
-    this.employer = employer;
-    this.id = id();
-  }
+const mongoose = require('mongoose');
+const AutoIncrement = require('mongoose-sequence')(mongoose);
 
-  static create(
-    title, description, zipcode, category, jobType,
-    compensationMin, compensationMax, tips, employer,
-  ) {
-    return new Job(
-      title, description, zipcode, category, jobType,
-      compensationMin, compensationMax, tips, employer,
-    );
-  }
-};
+const JobSchema = mongoose.Schema({
+  title: String,
+  description: String,
+  zipcode: String,
+  category: String,
+  jobType: String,
+  compensationMin: Number,
+  compensationMax: Number,
+  tips: Boolean,
+  employer: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Employer',
+  },
+  applications: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Application',
+  }],
+  interviews: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Interview',
+  }],
+});
 
-function makeCounter() {
-  let i = 0;
-  return function () {
-    return i++;
-  };
-}
+// JobSchema.plugin(AutoIncrement, {inc_field: 'id'});
 
-const id = makeCounter();
+module.exports = mongoose.model('Job', JobSchema);
