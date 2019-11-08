@@ -10,6 +10,7 @@ const NotificationService = require('./services/notification-service');
 const ApplicationService = require('./services/application-service');
 const InterviewService = require('./services/interview-service');
 const JobService = require('./services/job-service');
+const JobSeekerService = require('./services/jobseeker-service');
 
 require('./database-connection');
 
@@ -171,6 +172,37 @@ app.delete('/job/:id', async (req, res) => {
   const job = await JobService.deleteOne({ _id: req.params.id });
   res.send(job);
 });
+
+// -------------------------------------JobSeeker Endpoints --------------------------------
+app.get('/jobseeker/all', async (req, res) => {
+  const jobseekers = await JobSeekerService.findAll();
+  // res.send(jobseekers);
+  res.render('jobseekers', { jobseekers });
+});
+
+app.get('/jobseeker/:id', async (req, res) => {
+  const jobseeker = await JobSeekerService.find({ _id: req.params.id });
+  // res.send(jobseeker)
+  res.render('jobseeker', { jobseeker });
+});
+
+app.post('/jobseeker', async (req, res) => {
+  const jobseeker = await JobSeekerService.add(req.body);
+  res.send(jobseeker);
+  console.log(req.body);
+});
+
+app.put('/jobseeker/:id', async (req, res) => {
+  const jobseeker = await JobSeekerService.updateOne(req.params.id, req.body);
+  res.send(jobseeker);
+  console.log(req.body);
+});
+
+app.delete('/jobseeker/:id', async (req, res) => {
+  const jobseeker = await JobSeekerService.deleteOne({ _id: req.params.id });
+  res.send(jobseeker);
+});
+
 // -------------------------------------Listen --------------------------------
 
 app.listen(3000, () => {
