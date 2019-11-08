@@ -21,13 +21,13 @@ block content
                     td #{application.job}
                     td #{application.jobSeeker}
                     td #{application.yearsOfExperience}
-                    td #{application.emlanguagesSpokenail}
+                    td #{application.languagesSpoken}
                     td #{application.otherSkills}
                     td #{application.interviewAvailability}
-                    td #{application.status}
                     td #{application.interview}
+                    td #{application.status}
 
-        pre= JSON.stringify(people, null, 2)
+        pre= JSON.stringify(applications, null, 2)
     else
         p There's no one yet :(
     script.
