@@ -9,6 +9,7 @@ const EmployerService = require('./services/employer-service');
 const NotificationService = require('./services/notification-service');
 const ApplicationService = require('./services/application-service');
 const InterviewService = require('./services/interview-service');
+const JobService = require('./services/job-service');
 
 require('./database-connection');
 
@@ -141,6 +142,35 @@ app.delete('/interview/:id', async (req, res) => {
   res.send(interview);
 });
 
+// -------------------------------------Job Endpoints --------------------------------
+app.get('/job/all', async (req, res) => {
+  const jobs = await JobService.findAll();
+  // res.send(jobs);
+  res.render('jobs', { jobs });
+});
+
+app.get('/job/:id', async (req, res) => {
+  const job = await JobService.find({ _id: req.params.id });
+  // res.send(job)
+  res.render('job', { job });
+});
+
+app.post('/job', async (req, res) => {
+  const job = await JobService.add(req.body);
+  res.send(job);
+  console.log(req.body);
+});
+
+app.put('/job/:id', async (req, res) => {
+  const job = await JobService.updateOne(req.params.id, req.body);
+  res.send(job);
+  console.log(req.body);
+});
+
+app.delete('/job/:id', async (req, res) => {
+  const job = await JobService.deleteOne({ _id: req.params.id });
+  res.send(job);
+});
 // -------------------------------------Listen --------------------------------
 
 app.listen(3000, () => {
