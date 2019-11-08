@@ -13,6 +13,7 @@ block content
                 td Category
                 td Job Type
                 td Tips
+                td Employer
             each job in jobs
                 tr
                     td #{job._id}
@@ -22,6 +23,7 @@ block content
                     td #{job.category}
                     td #{job.jobType}
                     td #{job.tips}
+                    td #{job.employer}
 
         pre= JSON.stringify(people, null, 2)
     else

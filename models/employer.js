@@ -11,7 +11,10 @@ const EmployerSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Notification',
   }],
-  email: String,
+  email: {
+    type: String,
+    required: true,
+  },
 });
 
 // EmployerSchema.plugin(AutoIncrement, { inc_field: 'id' });
