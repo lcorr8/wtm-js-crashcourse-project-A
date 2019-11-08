@@ -1,0 +1,34 @@
+extends layout
+
+block content
+    h1 Applications
+    if applications.length
+        p Here are the applications:
+        table
+            thead
+                td _ID
+                td Job
+                td JobSeeker
+                td Yrs of experience
+                td Languages
+                td Other Skills
+                td Interview availability
+                td Interview
+                td Status
+            each application in applications
+                tr
+                    td #{application._id}
+                    td #{application.job}
+                    td #{application.jobSeeker}
+                    td #{application.yearsOfExperience}
+                    td #{application.emlanguagesSpokenail}
+                    td #{application.otherSkills}
+                    td #{application.interviewAvailability}
+                    td #{application.status}
+                    td #{application.interview}
+
+        pre= JSON.stringify(people, null, 2)
+    else
+        p There's no one yet :(
+    script.
+        console.log(!{JSON.stringify(applications)})

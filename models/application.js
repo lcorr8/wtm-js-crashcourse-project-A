@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const AutoIncrement = require('mongoose-sequence')(mongoose);
+// const AutoIncrement = require('mongoose-sequence')(mongoose);
 
 // define schema
 const ApplicationSchema = mongoose.Schema({
