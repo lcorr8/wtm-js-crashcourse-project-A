@@ -44,10 +44,10 @@ axios.delete('/employer/5dc5800d1bb3f7e77aee0246').then(console.log)
 # Homework for week 4
 
 1) :white_check_mark: Extend your NodeJS application by implemeting a web server using Express.js framework
-2) Expose the capabilities of your application through URLs
+2) :white_check_mark: Expose the capabilities of your application through URLs
     - :white_check_mark: basic CRUD functionality
-    - special business logic
+    - :white_check_mark: special business logic
 3) :white_check_mark: Make sure to add as many URLs as possible for creating / fetching / deleting resources
-4) Add at least one URL which does a complex operation. Examples: Make a user attend a meetup, make a user comment on a movie
+4) :white_check_mark: Add at least one URL which does a complex operation. Examples: Make a user attend a meetup, make a user comment on a movie
 5) :white_check_mark: Add layout.pug file in your application under views folder
 6) :white_check_mark: Display the data in the browser using pug files. Extend your pug templates from layout.pug.
