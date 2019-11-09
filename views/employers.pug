@@ -8,10 +8,14 @@ block content
             thead
                 td _ID
                 td Email
+                td Jobs
+                td Inbox
             each employer in employers
                 tr
                     td #{employer._id}
                     td #{employer.email}
+                    td #{employer.jobs}
+                    td #{employer.inbox}
 
         pre= JSON.stringify(employers, null, 2)
     else

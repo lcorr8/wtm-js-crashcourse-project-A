@@ -9,11 +9,17 @@ block content
                 td _ID
                 td name
                 td email
+                td applications
+                td interviews
+                td resumes
             each jobseeker in jobseekers
                 tr
                     td #{jobseeker._id}
                     td #{jobseeker.name}
                     td #{jobseeker.email}
+                    td #{jobseeker.applications}
+                    td #{jobseeker.interviews}
+                    td #{jobseeker.resumes}
 
         pre= JSON.stringify(jobseekers, null, 2)
     else

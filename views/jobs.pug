@@ -7,23 +7,27 @@ block content
         table
             thead
                 td _ID
+                td Employer
+                td Applications
+                td Interviews
                 td Title
                 td Description
                 td Zipcode
                 td Category
                 td Job Type
                 td Tips
-                td Employer
             each job in jobs
                 tr
                     td #{job._id}
+                    td #{job.employer}
+                    td #{job.applications}
+                    td #{job.interviews}
                     td #{job.title}
                     td #{job.description}
                     td #{job.zipcode}
                     td #{job.category}
                     td #{job.jobType}
                     td #{job.tips}
-                    td #{job.employer}
 
         pre= JSON.stringify(jobs, null, 2)
     else
