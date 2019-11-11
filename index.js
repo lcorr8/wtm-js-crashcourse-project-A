@@ -10,7 +10,7 @@ const NotificationService = require('./services/notification-service');
 const ApplicationService = require('./services/application-service');
 const InterviewService = require('./services/interview-service');
 const JobService = require('./services/job-service');
-const JobSeekerService = require('./services/jobseeker-service');
+const JobSeekerService = require('./services/job-seeker-service');
 
 require('./database-connection');
 
@@ -177,13 +177,13 @@ app.delete('/job/:id', async (req, res) => {
 app.get('/jobseeker/all', async (req, res) => {
   const jobseekers = await JobSeekerService.findAll();
   // res.send(jobseekers);
-  res.render('jobseekers', { jobseekers });
+  res.render('job-seekers', { jobseekers });
 });
 
 app.get('/jobseeker/:id', async (req, res) => {
   const jobseeker = await JobSeekerService.find({ _id: req.params.id });
   // res.send(jobseeker)
-  res.render('jobseeker', { jobseeker });
+  res.render('job-seeker', { jobseeker });
 });
 
 app.post('/jobseeker', async (req, res) => {

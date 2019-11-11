@@ -1,6 +1,13 @@
 ## read and implement
 1. read and implement [Enumerations in Node.js and Mongoose](https://rclayton.silvrback.com/export-enumerations-as-static-mongoose-properties)
 2. read and implement [How to store images to MongoDB with Node.js](https://medium.com/@alvenw/how-to-store-images-to-mongodb-with-node-js-fb3905c37e6d)
+3. implement better error handling (HOL) [Wes Bos async + await in Js Talk (around min 12:15)](https://www.youtube.com/watch?v=DwQJ_NPQWWo)
+4. refactor routes into router modules
+5. implement job search route
+6. add better documentation
+7. :white_check_mark: update filenames to use kebab-case
+8. implement autoincrement ids for models
+
 
 ## general reading
 1. [Say NO to SQL?
