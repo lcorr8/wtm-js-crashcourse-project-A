@@ -156,6 +156,7 @@ app.get('/job/:id', async (req, res) => {
   res.render('job', { job });
 });
 
+// axios.post('/job', {title: "title", description: "description", zipcode: "10117", category: "kitchen", jobType: "full-time", tips: true, employer: "5dc495951aadb880e40e7fd1"}).catch( err => console.log(err))
 app.post('/job', async (req, res) => {
   const job = await JobService.add(req.body);
   res.send(job);
@@ -212,6 +213,7 @@ app.delete('/jobseeker/:id', async (req, res) => {
  * user becomes employer or job seeker
  *
  * [DONE] employer creates a job listing
+ * - job search route
  * [DONE] job seeker starts application
  * - job seeker adds resume to application
  * [DONE] job seeker submits an application to a given job
@@ -252,6 +254,16 @@ app.post('/employer/:id/newJob', async (req, res) => {
 //   compensationMax: 12,
 //   tips: true,
 // }).then(console.log)
+
+// app.get('/job/search', async (req, res) => {
+//   const query = { tips: true };
+//   // const query = {};
+//   const jobs = await JobService.findAll(query);
+//   console.log(jobs);
+//   res.render('jobs', { jobs });
+// });
+
+
 
 // job seeker starts application, application gets added to job seeker
 app.post('/jobseeker/:id/job/:jobId/application/new', async (req, res) => {
