@@ -15,8 +15,8 @@ module.exports = class Service {
     return this.model.findOne(id);
   }
 
-  async findAll() {
-    return this.model.find();
+  async findAll(query) {
+    return this.model.find(query);
   }
 
   async updateOne(id, options) {
