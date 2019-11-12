@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const JobSeekerService = require('../services/job-seeker-service');
 
-// -------------------------------------JobSeeker Endpoints --------------------------------
 router.get('/jobseeker/all', async (req, res) => {
   const jobseekers = await JobSeekerService.findAll();
   // res.send(jobseekers);

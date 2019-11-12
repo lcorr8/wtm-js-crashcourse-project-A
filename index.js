@@ -17,7 +17,7 @@ const NotificationRoutes = require('./routes/notification');
 const ApplicationRoutes = require('./routes/application');
 const InterviewRoutes = require('./routes/interview');
 const JobRoutes = require('./routes/job');
-const JobSeekerRoutes = require('./routes/jobSeeker');
+const JobSeekerRoutes = require('./routes/job-seeker');
 
 require('./database-connection');
 
