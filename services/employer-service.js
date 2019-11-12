@@ -2,9 +2,7 @@ const BaseService = require('./base-service');
 const EmployerModel = require('../models/employer');
 
 class EmployerService extends BaseService {
-  constructor() {
-    super(EmployerModel);
-  }
+  model = EmployerModel;
 }
 
 module.exports = new EmployerService();
