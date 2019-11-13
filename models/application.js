@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 // const AutoIncrement = require('mongoose-sequence')(mongoose);
-
+const ApplicationStatuses = Object.freeze({
+  Accepted: 'accepted',
+  Pending: 'pending',
+  Declined: 'declined',
+});
 // define schema
 const ApplicationSchema = mongoose.Schema({
   job: {
@@ -28,7 +32,7 @@ const ApplicationSchema = mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['accepted', 'maybe', 'declined'],
+    enum: Object.values(ApplicationStatuses),
   },
   interview: {
     type: mongoose.Schema.Types.ObjectId,
