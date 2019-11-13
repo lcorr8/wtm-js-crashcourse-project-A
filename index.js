@@ -38,38 +38,9 @@ app.use(InterviewRoutes);
 app.use(JobRoutes);
 app.use(JobSeekerRoutes);
 
-
 // ------------------------------------Complex Interaction Endpoints -------------------------------
 
-/**
- * // TODO: user management
- * user registers
- * user signs in
- * user logs out
- * user becomes employer or job seeker
- *
- * [DONE] employer creates a job listing
- * [DONE] job search route
- * [DONE] jobseeker starts application
- *    [DONE]app gets added to jobseeker
- * - job seeker adds resume to application
- * [DONE] job seeker submits an application to a given job
- *    [DONE] application gets added to job applications list
- *    [DONE] notification is sent to employer
- * [DONE] employer offers an interview:
- *    [DONE] add interview to db
- *    [DONE] add interview to application, update status
- *    [DONE] notification is sent to jobseeker
- * [DONE] job seeker accepts interview
- *    [DONE] notification is sent to employer
- *    [DONE] application status is updated
- * [DONE] employer updates application status
- *    [DONE] accepted: notifications sent to applicant
- *
- * - rejection notifications are sent out to applicants when job listing runs out (a month after)
- */
-
-// employer creates a job listing, job gets added to employer's jobs list
+// employer creates a job listing, job gets added to employer's list
 app.post('/employer/:id', async (req, res) => {
   const employer = await EmployerService.find(req.params.id).catch((err) => console.log(err));
   const jobParams = req.body;
@@ -87,7 +58,7 @@ app.post('/employer/:id', async (req, res) => {
 //   tips: true,
 // }).then(console.log)
 
-// job search functionality
+// job search route
 app.get('/jobs?', async (req, res) => {
   const { query } = req;
   const jobs = await JobService.findAll(query);
@@ -116,9 +87,7 @@ app.post('/jobseeker/:id/job/:jobId/application/', async (req, res) => {
 //   interviewAvailability: "available on...",
 // }).then(console.log)
 
-// TODO: add path for editing application by adding resume photo
-
-// job seeker submits an application
+// job seeker submits an application, application gets added job's applications list and notification sent to employer
 app.post('/application/:applicationId/submit', async (req, res) => {
   const application = await ApplicationService.find(req.params.applicationId).catch((err) => console.log(err));
   const job = await JobService.find(application.job._id).catch((err) => console.log(err));
@@ -130,7 +99,7 @@ app.post('/application/:applicationId/submit', async (req, res) => {
 // axios.post('/application/5dc5c64c6e56120e008f5c1c/submit').then(console.log);
 
 
-// employer offers an interview
+// employer offers an interview, interview added to application and application status updated
 app.post('/application/:id/interview', async (req, res) => {
   const application = await ApplicationService.find(req.params.id).catch((err) => console.log(err));
   const scheduleOptions = req.body;
@@ -142,7 +111,7 @@ app.post('/application/:id/interview', async (req, res) => {
 //   scheduleOptions: [new Date("december 3, 2019 11:30"), new Date("december 4, 2019 15:30"), new Date("december 5, 2019 17:30")],
 // }).then(console.log);
 
-// job seeker accepts interview by selecting a final interview slot and notification is sent to employer
+// job seeker accepts interview by selecting a final interview slot, application status is updated, and notification is sent to employer
 app.post('/interview/:id/slot/:number', async (req, res) => {
   const interview = await InterviewService.find(req.params.id).catch((err) => console.log(err));
   const updatedInterview = await InterviewService.acceptAndFinalizeTime(interview, req.params.number);
@@ -152,7 +121,7 @@ app.post('/interview/:id/slot/:number', async (req, res) => {
 });
 // axios.post('/interview/5dc5fe1bb86c5716604c0a46/slot/1').then(console.log);
 
-// employer updates application status, notifications sent to applicant
+// employer updates application status, notifications sent to applicant if accepted
 app.post('/application/:id/status', async (req, res) => {
   const { id } = req.params;
   const { status } = req.body;
@@ -170,9 +139,7 @@ app.post('/application/:id/status', async (req, res) => {
 // axios.post('/application/:id/status', {status: 'pending'}).then(console.log);
 // axios.post('/application/:id/status', {status: 'accepted'}).then(console.log);
 
-
 // -------------------------------------Listen --------------------------------
-
 app.listen(3000, () => {
   console.log('did i work?');
 });
