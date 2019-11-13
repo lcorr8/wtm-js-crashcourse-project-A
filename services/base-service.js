@@ -12,7 +12,7 @@ module.exports = class Service {
   }
 
   async find(id) {
-    return this.model.findOne(id);
+    return this.model.findOne({ _id: id });
   }
 
   async findAll(query) {
@@ -20,6 +20,6 @@ module.exports = class Service {
   }
 
   async updateOne(id, update) {
-    return this.model.findOneAndUpdate(id, update, { new: true, useFindAndModify: false, runValidators: true });
+    return this.model.findOneAndUpdate({ _id: id }, update, { new: true, useFindAndModify: false, runValidators: true });
   }
 };

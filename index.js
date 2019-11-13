@@ -64,20 +64,14 @@ app.use(JobSeekerRoutes);
  */
 
 // employer creates a job listing, job gets added to employer's jobs list
-app.post('/employer/:id/newJob', async (req, res) => {
-  const employer = await EmployerService.find({ _id: req.params.id }).catch((err) => console.log(err));
-  const updatedRequestBody = req.body;
-  updatedRequestBody.employer = employer;
-  const job = await JobService.add(updatedRequestBody).catch((err) => console.log(err));
-
-  const updatedEmployerJobs = employer.jobs;
-  updatedEmployerJobs.push(job);
-  const updatedEmployer = await EmployerService.updateOne({_id: employer._id}, { jobs: updatedEmployerJobs }).catch((err) => console.log(err));
-  res.send(updatedEmployer);
-  console.log(updatedEmployer);
+app.post('/employer/:id', async (req, res) => {
+  const employer = await EmployerService.find(req.params.id).catch((err) => console.log(err));
+  const jobParams = req.body;
+  const job = await EmployerService.addJob(employer, jobParams);
+  res.send(job);
 });
 
-// axios.post('/employer/5dc57b75c88a00e5aed4ac64/newJob', {
+// axios.post('/employer/5dc57b75c88a00e5aed4ac64/', {
 //   title: "title...",
 //   description: "description...",
 //   zipcode: "10117",
@@ -106,8 +100,8 @@ app.post('/search/job', async (req, res) => {
 
 // job seeker starts application, application gets added to job seeker
 app.post('/jobseeker/:id/job/:jobId/application/new', async (req, res) => {
-  const jobseeker = await JobSeekerService.find({ _id: req.params.id }).catch((err) => console.log(err));
-  const job = await JobService.find({ _id: req.params.jobId }).catch((err) => console.log(err));
+  const jobseeker = await JobSeekerService.find(req.params.id).catch((err) => console.log(err));
+  const job = await JobService.find(req.params.jobId).catch((err) => console.log(err));
   const updatedRequestBody = req.body;
   updatedRequestBody.jobSeeker = jobseeker;
   updatedRequestBody.job = job;
@@ -115,7 +109,7 @@ app.post('/jobseeker/:id/job/:jobId/application/new', async (req, res) => {
 
   const updatedJobSeekerApplications = jobseeker.applications;
   updatedJobSeekerApplications.push(application);
-  const updatedJobSeeker = await JobSeekerService.updateOne({_id: jobseeker._id}, { applications: updatedJobSeekerApplications }).catch((err) => console.log(err));
+  const updatedJobSeeker = await JobSeekerService.updateOne(jobseeker._id, { applications: updatedJobSeekerApplications }).catch((err) => console.log(err));
 
   res.send(application);
   console.log(updatedJobSeeker);
@@ -132,14 +126,14 @@ app.post('/jobseeker/:id/job/:jobId/application/new', async (req, res) => {
 
 // job seeker submits an application, application gets added to job applications list, notification gets sent to employer
 app.post('/application/:applicationId/submit', async (req, res) => {
-  const application = await ApplicationService.find({ _id: req.params.applicationId }).catch((err) => console.log(err));
-  const job = await JobService.find({ _id: application.job._id }).catch((err) => console.log(err));
+  const application = await ApplicationService.find(req.params.applicationId).catch((err) => console.log(err));
+  const job = await JobService.find(application.job._id).catch((err) => console.log(err));
   const updatedJobApplications = job.applications;
   updatedJobApplications.push(application);
-  const updatedJobFromDB = await JobService.updateOne({_id: job._id}, { applications: updatedJobApplications }).catch((err) => console.log(err));
+  const updatedJobFromDB = await JobService.updateOne(job._id, { applications: updatedJobApplications }).catch((err) => console.log(err));
 
   // notification is sent to employer
-  const employer = await EmployerService.find({ _id: job.employer._id }).catch((err) => console.log(err));
+  const employer = await EmployerService.find(job.employer._id).catch((err) => console.log(err));
 
   const message = `You have received an application for the following job post: ${job._id}`
   const time = Date();
@@ -147,7 +141,7 @@ app.post('/application/:applicationId/submit', async (req, res) => {
   const notification = await NotificationService.add({message: message, time: time, application: application, opened: opened}).catch((err) => console.log(err));
   const updatedNotifications = employer.inbox;
   updatedNotifications.push(notification);
-  const updatedEmployer = await EmployerService.updateOne({ _id: employer._id }, { inbox: updatedNotifications }).catch((err) => console.log(err));
+  const updatedEmployer = await EmployerService.updateOne(employer._id, { inbox: updatedNotifications }).catch((err) => console.log(err));
 
   res.send(updatedJobFromDB);
   console.log(updatedEmployer);
@@ -158,7 +152,7 @@ app.post('/application/:applicationId/submit', async (req, res) => {
 
 // employer offers an interview
 app.post('/application/:id/interview/new', async (req, res) => {
-  const application = await ApplicationService.find({ _id: req.params.id }).catch((err) => console.log(err));
+  const application = await ApplicationService.find(req.params.id).catch((err) => console.log(err));
   const jobId = application.job;
   const jobseekerId = application.jobSeeker;
 
@@ -170,12 +164,12 @@ app.post('/application/:id/interview/new', async (req, res) => {
   const interview = await InterviewService.add(updatedRequestBody).catch((err) => console.log(err));
 
   // add interview to application
-  const updatedApplication = await ApplicationService.updateOne({_id: application._id}, {interview: interview});
+  const updatedApplication = await ApplicationService.updateOne(application._id, {interview: interview});
 
   // add interview to job interviews array
   const job = await JobService.find(jobId).catch((err) => console.log(err));
   job.interviews.push(interview);
-  const updatedJob = await JobService.updateOne({_id: job._id}, {interviews: job.interviews}).catch((err) => console.log(err));;
+  const updatedJob = await JobService.updateOne(job._id, {interviews: job.interviews}).catch((err) => console.log(err));;
 
   // add interview to jobseekers interviews array
   const jobSeeker = await JobSeekerService.find(jobseekerId).catch((err) => console.log(err));
@@ -189,7 +183,7 @@ app.post('/application/:id/interview/new', async (req, res) => {
   const updatedNotifications = jobSeeker.inbox;
   updatedNotifications.push(notification);
   // update jobseeker
-  const updatedJobSeeker = await JobSeekerService.updateOne({_id: jobseekerId}, {interviews: updatedJobseekerInterviews, inbox: updatedNotifications}).catch((err) => console.log(err));
+  const updatedJobSeeker = await JobSeekerService.updateOne(jobseekerId, {interviews: updatedJobseekerInterviews, inbox: updatedNotifications}).catch((err) => console.log(err));
 
   res.send(interview);
   console.log(updatedJobSeeker);
@@ -201,13 +195,13 @@ app.post('/application/:id/interview/new', async (req, res) => {
 
 // job seeker accepts interview by selecting a final interview slot and notification is sent to employer
 app.post('/interview/:id/slot/:number/accept', async (req, res) => {
-  const interview = await InterviewService.find({ _id: req.params.id }).catch((err) => console.log(err));
+  const interview = await InterviewService.find(req.params.id).catch((err) => console.log(err));
   const slotIndex = Number(req.params.number) - 1 //subtract one for index
   const finalInterviewTime = interview.scheduleOptions[slotIndex];
-  const updatedInterview = await InterviewService.updateOne({ _id: interview._id }, { finalInterviewSlot: finalInterviewTime }).catch((err) => console.log(err));
+  const updatedInterview = await InterviewService.updateOne(interview._id, { finalInterviewSlot: finalInterviewTime }).catch((err) => console.log(err));
 
-  const job = await JobService.find({ _id: interview.job }).catch((err) => console.log(err));
-  const employer = await EmployerService.find({ _id: job.employer }).catch((err) => console.log(err));
+  const job = await JobService.find(interview.job).catch((err) => console.log(err));
+  const employer = await EmployerService.find(job.employer).catch((err) => console.log(err));
   const updatedInbox = employer.inbox;
 
   // notification is sent to employer
@@ -217,7 +211,7 @@ app.post('/interview/:id/slot/:number/accept', async (req, res) => {
   const notification = await NotificationService.add({message: message, time: time, application: interview.application, opened: opened}).catch((err) => console.log(err));
 
   updatedInbox.push(notification);
-  const updatedEmployer = await EmployerService.updateOne({ _id: employer._id }, { inbox: updatedInbox }).catch((err) => console.log(err));
+  const updatedEmployer = await EmployerService.updateOne(employer._id, { inbox: updatedInbox }).catch((err) => console.log(err));
 
   res.send(updatedInterview);
   console.log(updatedEmployer);
@@ -227,10 +221,10 @@ app.post('/interview/:id/slot/:number/accept', async (req, res) => {
 
 // employer updates application status, notifications sent to applicant
 app.post('/job/:id/application/:applicationId/status', async (req, res) => {
-  const job = await JobService.find({ _id: req.params.id }).catch((err) => console.log(err));
-  const application = await ApplicationService.find({ _id: req.params.applicationId }).catch((err) => console.log(err));
+  const job = await JobService.find(req.params.id).catch((err) => console.log(err));
+  const application = await ApplicationService.find(req.params.applicationId).catch((err) => console.log(err));
   const status = req.body.status
-  const updatedApplication = await ApplicationService.updateOne({_id: application._id}, { status: status }).catch((err) => console.log(err));
+  const updatedApplication = await ApplicationService.updateOne(application._id, { status: status }).catch((err) => console.log(err));
 
   if (status === 'accepted') {
     const time = Date();
@@ -238,10 +232,10 @@ app.post('/job/:id/application/:applicationId/status', async (req, res) => {
     const message = `Congratulations! your application for the following job post: ${job._id} has been accepted!`
     const notification = await NotificationService.add({ message: message, time: time, application: application, opened: opened }).catch((err) => console.log(err));
 
-    const jobseeker = await JobSeekerService.find({ _id: application.jobSeeker }).catch((err) => console.log(err));
+    const jobseeker = await JobSeekerService.find(application.jobSeeker).catch((err) => console.log(err));
     const updatedInbox = jobseeker.inbox;
     updatedInbox.push(notification);
-    const updatedJobSeeker = await JobSeekerService.updateOne({ _id: jobseeker._id }, { inbox: updatedInbox }).catch((err) => console.log(err));
+    const updatedJobSeeker = await JobSeekerService.updateOne(jobseeker._id, { inbox: updatedInbox }).catch((err) => console.log(err));
     console.log(updatedJobSeeker);
   }
 

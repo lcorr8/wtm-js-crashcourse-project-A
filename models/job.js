@@ -16,7 +16,7 @@ const JobTypes = Object.freeze({
   Internship: 'internship',
   TempOrSeasonal: 'temporary/seasonal',
   Freelance: 'freelance',
-})
+});
 
 const JobSchema = mongoose.Schema({
   title: {
