@@ -1,5 +1,5 @@
 ## read and implement
-1. read and implement [Enumerations in Node.js and Mongoose](https://rclayton.silvrback.com/export-enumerations-as-static-mongoose-properties)
+1. :white_check_mark: read and implement [Enumerations in Node.js and Mongoose](https://rclayton.silvrback.com/export-enumerations-as-static-mongoose-properties)
 2. read and implement [How to store images to MongoDB with Node.js](https://medium.com/@alvenw/how-to-store-images-to-mongodb-with-node-js-fb3905c37e6d) for resume functionality
 3. implement better error handling (HOL) [Wes Bos async + await in Js Talk (around min 12:15)](https://www.youtube.com/watch?v=DwQJ_NPQWWo)
 4. :white_check_mark: refactor routes into router modules
