@@ -20,6 +20,10 @@ module.exports = class Service {
   }
 
   async updateOne(id, update) {
-    return this.model.findOneAndUpdate({ _id: id }, update, { new: true, useFindAndModify: false, runValidators: true });
+    return this.model.findOneAndUpdate({ _id: id }, update, {
+      new: true,
+      useFindAndModify: false,
+      runValidators: true,
+    });
   }
 };

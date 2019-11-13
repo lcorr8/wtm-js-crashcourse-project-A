@@ -48,10 +48,12 @@ app.use(JobSeekerRoutes);
  *
  * [DONE] employer creates a job listing
  * [DONE] job search route
- * [-] job seeker starts application
+ * [DONE] jobseeker starts application
+ *    [DONE]app gets added to jobseeker
  * - job seeker adds resume to application
- * [-] job seeker submits an application to a given job
- *    [-] notification is sent to employer
+ * [DONE] job seeker submits an application to a given job
+ *    [DONE] application gets added to job applications list
+ *    [DONE] notification is sent to employer
  *
  * [-] employer offers an interview
  *    [-] notification is sent to jobseeker
@@ -105,7 +107,6 @@ app.post('/jobseeker/:id/job/:jobId/application/', async (req, res) => {
   console.log(application);
   res.send(application);
 });
-
 // axios.post('/jobseeker/5dc5a77097fdf806d7a70d08/job/5dc5c28e4608550d4ebdad4e/application', {
 //   yearsOfExperience: 4,
 //   languagesSpoken: "languages...",
@@ -115,29 +116,15 @@ app.post('/jobseeker/:id/job/:jobId/application/', async (req, res) => {
 
 // TODO: add path for editing application by adding resume photo
 
-// job seeker submits an application, application gets added to job applications list, notification gets sent to employer
+// job seeker submits an application
 app.post('/application/:applicationId/submit', async (req, res) => {
   const application = await ApplicationService.find(req.params.applicationId).catch((err) => console.log(err));
   const job = await JobService.find(application.job._id).catch((err) => console.log(err));
-  const updatedJobApplications = job.applications;
-  updatedJobApplications.push(application);
-  const updatedJobFromDB = await JobService.updateOne(job._id, { applications: updatedJobApplications }).catch((err) => console.log(err));
+  await ApplicationService.submitApplication(application, job);
 
-  // notification is sent to employer
-  const employer = await EmployerService.find(job.employer._id).catch((err) => console.log(err));
-
-  const message = `You have received an application for the following job post: ${job._id}`
-  const time = Date();
-  const opened = false;
-  const notification = await NotificationService.add({message: message, time: time, application: application, opened: opened}).catch((err) => console.log(err));
-  const updatedNotifications = employer.inbox;
-  updatedNotifications.push(notification);
-  const updatedEmployer = await EmployerService.updateOne(employer._id, { inbox: updatedNotifications }).catch((err) => console.log(err));
-
-  res.send(updatedJobFromDB);
-  console.log(updatedEmployer);
+  const updatedApplication = await ApplicationService.find(application._id).catch((err) => console.log(err));
+  res.send(updatedApplication);
 });
-
 // axios.post('/application/5dc5c64c6e56120e008f5c1c/submit').then(console.log);
 
 
