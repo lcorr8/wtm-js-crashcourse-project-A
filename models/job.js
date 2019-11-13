@@ -1,6 +1,23 @@
 const mongoose = require('mongoose');
 // const AutoIncrement = require('mongoose-sequence')(mongoose);
 
+const Categories = Object.freeze({
+  Bar: 'bar',
+  Floor: 'floor',
+  Kitchen: 'kitchen',
+  Management: 'management',
+  Office: 'office',
+  Other: 'other',
+});
+
+const JobTypes = Object.freeze({
+  FullTime: 'full-time',
+  PArtTime: 'part-time',
+  Internship: 'internship',
+  TempOrSeasonal: 'temporary/seasonal',
+  Freelance: 'freelance',
+})
+
 const JobSchema = mongoose.Schema({
   title: {
     type: String,
@@ -16,12 +33,12 @@ const JobSchema = mongoose.Schema({
   },
   category: {
     type: String,
-    enum: ['kitchen', 'bar', 'floor', 'management', 'office'],
+    enum: Object.values(Categories),
     required: true,
   },
   jobType: {
     type: String,
-    enum: ['full-time', 'part-time', 'internship', 'temporary/seasonal', 'freelance'],
+    enum: Object.values(JobTypes),
     required: true,
   },
   compensationMin: Number,
