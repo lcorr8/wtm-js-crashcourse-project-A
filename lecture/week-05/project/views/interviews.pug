@@ -1,0 +1,30 @@
+extends layout
+
+block content
+    h1 Interviews
+    if interviews.length
+        p Here are the interviews:
+        table
+            thead
+                td _ID
+                td Job
+                td JobSeeker
+                td Application
+                td Scheduled options
+                td final interview slot
+               
+            each interview in interviews
+                tr
+                    td #{interview._id}
+                    td #{interview.job}
+                    td #{interview.jobSeeker}
+                    td #{interview.application}
+                    td #{interview.scheduleOptions}
+                    td #{interview.finalInterviewSlot}
+                    
+
+        pre= JSON.stringify(interviews, null, 2)
+    else
+        p There's no one yet :(
+    script.
+        console.log(!{JSON.stringify(interviews)})

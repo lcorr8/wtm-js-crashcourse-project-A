@@ -1,0 +1,20 @@
+extends layout
+
+block content
+    h1 Notifications
+    if notifications.length
+        p Here are the notifications:
+        table
+            thead
+                td _ID
+                td Message
+            each notification in notifications
+                tr
+                    td #{notification._id}
+                    td #{notification.message}
+
+        pre= JSON.stringify(notifications, null, 2)
+    else
+        p There's no one yet :(
+    script.
+        console.log(!{JSON.stringify(notifications)})
