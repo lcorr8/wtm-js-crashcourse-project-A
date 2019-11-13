@@ -23,7 +23,7 @@ router.post('/application', async (req, res) => {
 router.put('/application/:id', async (req, res) => {
   const application = await ApplicationService.updateOne({ _id: req.params.id }, req.body);
   res.send(application);
-  console.log(req.body);
+  console.log(application);
 });
 
 router.delete('/application/:id', async (req, res) => {
