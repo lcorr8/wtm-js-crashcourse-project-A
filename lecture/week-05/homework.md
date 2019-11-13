@@ -10,6 +10,7 @@
 9. refactor complex interactions into services to clean up routes
 10. add resume to jobseeker service, and route
 11. add resume to application (add new or select existing) service and route
+12. use library to auto populate `$ npm i mongoose-autopopulate`, cap it at 1-2 levels
 
 
 ## general reading
