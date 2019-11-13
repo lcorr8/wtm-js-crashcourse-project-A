@@ -4,6 +4,12 @@ const NotificationModel = require('../models/notification');
 class NotificationService extends BaseService {
   model = NotificationModel
 
+  /**
+   * Adds notification to model object's inbox
+   * @param {*} modelObject whose inbox needs to be updated with a notification
+   * @param {*} application application object
+   * @param {*} message message for the notification
+   */
   async sendNotification(modelObject, application, message){
     const time = Date();
     const opened = false;

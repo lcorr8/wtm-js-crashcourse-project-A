@@ -1,10 +1,10 @@
 /* eslint-disable no-console */
 
 const express = require('express');
-
 const app = express();
 const bodyParser = require('body-parser');
 const axios = require('axios').default;
+
 const EmployerService = require('./services/employer-service');
 const NotificationService = require('./services/notification-service');
 const ApplicationService = require('./services/application-service');
@@ -18,6 +18,8 @@ const ApplicationRoutes = require('./routes/application');
 const InterviewRoutes = require('./routes/interview');
 const JobRoutes = require('./routes/job');
 const JobSeekerRoutes = require('./routes/job-seeker');
+
+const Enums = require('./helpers/enums');
 
 require('./database-connection');
 
@@ -60,9 +62,9 @@ app.use(JobSeekerRoutes);
  *    [DONE] notification is sent to jobseeker
  * [DONE] job seeker accepts interview
  *    [DONE] notification is sent to employer
- *
- * [-] employer updates application status
- *    [-] accepted: notifications sent to applicant
+ *    [DONE] application status is updated
+ * [DONE] employer updates application status
+ *    [DONE] accepted: notifications sent to applicant
  *
  * - rejection notifications are sent out to applicants when job listing runs out (a month after)
  */
@@ -144,37 +146,29 @@ app.post('/application/:id/interview', async (req, res) => {
 app.post('/interview/:id/slot/:number', async (req, res) => {
   const interview = await InterviewService.find(req.params.id).catch((err) => console.log(err));
   const updatedInterview = await InterviewService.acceptAndFinalizeTime(interview, req.params.number);
-
+  const updatedApplication = await ApplicationService.updateOne(interview.application, { status: Enums.ApplicationStatuses.InterviewAccepted });
+  console.log(updatedApplication);
   res.send(updatedInterview);
 });
 // axios.post('/interview/5dc5fe1bb86c5716604c0a46/slot/1').then(console.log);
 
 // employer updates application status, notifications sent to applicant
-app.post('/job/:id/application/:applicationId/status', async (req, res) => {
-  const job = await JobService.find(req.params.id).catch((err) => console.log(err));
-  const application = await ApplicationService.find(req.params.applicationId).catch((err) => console.log(err));
-  const status = req.body.status
-  const updatedApplication = await ApplicationService.updateOne(application._id, { status: status }).catch((err) => console.log(err));
+app.post('/application/:id/status', async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+  const updatedApplication = await ApplicationService.updateOne(id, { status }).catch((err) => console.log(err));
 
   if (status === 'accepted') {
-    const time = Date();
-    const opened = false;
-    const message = `Congratulations! your application for the following job post: ${job._id} has been accepted!`
-    const notification = await NotificationService.add({ message: message, time: time, application: application, opened: opened }).catch((err) => console.log(err));
-
-    const jobseeker = await JobSeekerService.find(application.jobSeeker).catch((err) => console.log(err));
-    const updatedInbox = jobseeker.inbox;
-    updatedInbox.push(notification);
-    const updatedJobSeeker = await JobSeekerService.updateOne(jobseeker._id, { inbox: updatedInbox }).catch((err) => console.log(err));
-    console.log(updatedJobSeeker);
+    const jobseeker = await JobSeekerService.find(updatedApplication.jobSeeker).catch((err) => console.log(err));
+    const message = `Congratulations on your new Job! your application for the following job post: ${updatedApplication.job} has been accepted!`;
+    await NotificationService.sendNotification(jobseeker, updatedApplication, message).catch((err) => console.log(err));
   }
 
   res.send(updatedApplication);
 });
-
-// axios.post('/job/:id/application/:applicationId/status', {status: 'declined'}).then(console.log);
-// axios.post('/job/:id/application/:applicationId/status', {status: 'maybe'}).then(console.log);
-// axios.post('/job/:id/application/:applicationId/status', {status: 'accepted'}).then(console.log);
+// axios.post('/application/:id/status', {status: 'declined'}).then(console.log);
+// axios.post('/application/:id/status', {status: 'pending'}).then(console.log);
+// axios.post('/application/:id/status', {status: 'accepted'}).then(console.log);
 
 
 // -------------------------------------Listen --------------------------------

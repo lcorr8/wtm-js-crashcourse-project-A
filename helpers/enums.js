@@ -2,6 +2,7 @@ const ApplicationStatuses = Object.freeze({
   Started: 'started',
   Submitted: 'submitted',
   InterviewOffered: 'interviewOffered',
+  InterviewAccepted: 'interviewAccepted',
   Accepted: 'accepted',
   Pending: 'pending',
   Declined: 'declined',
