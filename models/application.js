@@ -1,10 +1,6 @@
 const mongoose = require('mongoose');
-// const AutoIncrement = require('mongoose-sequence')(mongoose);
-const ApplicationStatuses = Object.freeze({
-  Accepted: 'accepted',
-  Pending: 'pending',
-  Declined: 'declined',
-});
+const Enums = require('../helpers/enums');
+
 // define schema
 const ApplicationSchema = mongoose.Schema({
   job: {
@@ -15,6 +11,11 @@ const ApplicationSchema = mongoose.Schema({
   jobSeeker: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'JobSeeker',
+    required: true,
+  },
+  status: {
+    type: String,
+    enum: Object.values(Enums.ApplicationStatuses),
     required: true,
   },
   yearsOfExperience: {
@@ -30,10 +31,6 @@ const ApplicationSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  status: {
-    type: String,
-    enum: Object.values(ApplicationStatuses),
-  },
   interview: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Interview',
@@ -43,8 +40,6 @@ const ApplicationSchema = mongoose.Schema({
   //   data: ,
   // }
 });
-
-// ApplicationSchema.plugin(AutoIncrement, { inc_field: 'id' });
 
 // define model
 module.exports = mongoose.model('Application', ApplicationSchema);

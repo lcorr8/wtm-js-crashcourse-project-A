@@ -1,22 +1,5 @@
 const mongoose = require('mongoose');
-// const AutoIncrement = require('mongoose-sequence')(mongoose);
-
-const Categories = Object.freeze({
-  Bar: 'bar',
-  Floor: 'floor',
-  Kitchen: 'kitchen',
-  Management: 'management',
-  Office: 'office',
-  Other: 'other',
-});
-
-const JobTypes = Object.freeze({
-  FullTime: 'full-time',
-  PArtTime: 'part-time',
-  Internship: 'internship',
-  TempOrSeasonal: 'temporary/seasonal',
-  Freelance: 'freelance',
-});
+const Enums = require('../helpers/enums');
 
 const JobSchema = mongoose.Schema({
   title: {
@@ -33,12 +16,12 @@ const JobSchema = mongoose.Schema({
   },
   category: {
     type: String,
-    enum: Object.values(Categories),
+    enum: Object.values(Enums.JobCategories),
     required: true,
   },
   jobType: {
     type: String,
-    enum: Object.values(JobTypes),
+    enum: Object.values(Enums.JobTypes),
     required: true,
   },
   compensationMin: Number,
@@ -61,7 +44,5 @@ const JobSchema = mongoose.Schema({
     ref: 'Interview',
   }],
 });
-
-// JobSchema.plugin(AutoIncrement, {inc_field: 'id'});
 
 module.exports = mongoose.model('Job', JobSchema);

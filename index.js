@@ -96,23 +96,17 @@ app.get('/jobs?', async (req, res) => {
 // axios.get('/jobs/?zipcode[]=10117&zipcode[]=10118&jobType=part-time&tips=true&category=bar').catch(err => console.log(err));
 
 // job seeker starts application, application gets added to job seeker
-app.post('/jobseeker/:id/job/:jobId/application/new', async (req, res) => {
+app.post('/jobseeker/:id/job/:jobId/application/', async (req, res) => {
   const jobseeker = await JobSeekerService.find(req.params.id).catch((err) => console.log(err));
   const job = await JobService.find(req.params.jobId).catch((err) => console.log(err));
-  const updatedRequestBody = req.body;
-  updatedRequestBody.jobSeeker = jobseeker;
-  updatedRequestBody.job = job;
-  const application = await ApplicationService.add(updatedRequestBody).catch((err) => console.log(err));
+  const applicationParams = req.body;
+  const application = await ApplicationService.startApplication(jobseeker, job, applicationParams);
 
-  const updatedJobSeekerApplications = jobseeker.applications;
-  updatedJobSeekerApplications.push(application);
-  const updatedJobSeeker = await JobSeekerService.updateOne(jobseeker._id, { applications: updatedJobSeekerApplications }).catch((err) => console.log(err));
-
+  console.log(application);
   res.send(application);
-  console.log(updatedJobSeeker);
 });
 
-// axios.post('/jobseeker/5dc5a77097fdf806d7a70d08/job/5dc5c28e4608550d4ebdad4e/application/new', {
+// axios.post('/jobseeker/5dc5a77097fdf806d7a70d08/job/5dc5c28e4608550d4ebdad4e/application', {
 //   yearsOfExperience: 4,
 //   languagesSpoken: "languages...",
 //   otherSkills: "skills...",
