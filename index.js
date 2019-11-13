@@ -40,25 +40,26 @@ app.use(JobSeekerRoutes);
 // ------------------------------------Complex Interaction Endpoints -------------------------------
 
 /**
+ * // TODO: user management
  * user registers
  * user signs in
  * user logs out
  * user becomes employer or job seeker
  *
  * [DONE] employer creates a job listing
- * [DONE] job search route (post)
- * [DONE] job seeker starts application
+ * [DONE] job search route
+ * [-] job seeker starts application
  * - job seeker adds resume to application
- * [DONE] job seeker submits an application to a given job
- *    [DONE] notification is sent to employer
+ * [-] job seeker submits an application to a given job
+ *    [-] notification is sent to employer
  *
- * [DONE] employer offers an interview
- *    [DONE] notification is sent to jobseeker
- * [DONE] job seeker accepts interview
- *    [DONE] notification is sent to employer
+ * [-] employer offers an interview
+ *    [-] notification is sent to jobseeker
+ * [-] job seeker accepts interview
+ *    [-] notification is sent to employer
  *
- * [DONE] employer updates application status
- *    [DONE] accepted: notifications sent to applicant
+ * [-] employer updates application status
+ *    [-] accepted: notifications sent to applicant
  *
  * - rejection notifications are sent out to applicants when job listing runs out (a month after)
  */
@@ -82,21 +83,17 @@ app.post('/employer/:id', async (req, res) => {
 //   tips: true,
 // }).then(console.log)
 
-// sample req to visually test find by query functionality
-app.get('/search/job', async (req, res) => {
-  const query = { tips: false, category: 'bar' };
+// job search functionality
+app.get('/jobs?', async (req, res) => {
+  const { query } = req;
   const jobs = await JobService.findAll(query);
-  // console.log(jobs);
-  res.render('jobs', { jobs });
-});
-
-app.post('/search/job', async (req, res) => {
-  const query = req.body;
-  const jobs = await JobService.findAll(query);
+  console.log(query);
   console.log(jobs);
-  res.render('jobs', { jobs });
+  res.send(query);
+  // res.render('jobs', { jobs });
 });
-// axios.post('/search/job', { tips: false, category: 'bar' }).catch(err => console.log(err));
+// axios.get('/jobs/?zipcode=10117&jobType=full-time&tips=true&category=bar').catch(err => console.log(err));
+// axios.get('/jobs/?zipcode[]=10117&zipcode[]=10118&jobType=part-time&tips=true&category=bar').catch(err => console.log(err));
 
 // job seeker starts application, application gets added to job seeker
 app.post('/jobseeker/:id/job/:jobId/application/new', async (req, res) => {
