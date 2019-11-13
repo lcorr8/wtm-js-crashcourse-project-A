@@ -58,9 +58,8 @@ app.use(JobSeekerRoutes);
  *    [DONE] add interview to db
  *    [DONE] add interview to application, update status
  *    [DONE] notification is sent to jobseeker
- *
- * [-] job seeker accepts interview
- *    [-] notification is sent to employer
+ * [DONE] job seeker accepts interview
+ *    [DONE] notification is sent to employer
  *
  * [-] employer updates application status
  *    [-] accepted: notifications sent to applicant
@@ -142,30 +141,13 @@ app.post('/application/:id/interview', async (req, res) => {
 // }).then(console.log);
 
 // job seeker accepts interview by selecting a final interview slot and notification is sent to employer
-app.post('/interview/:id/slot/:number/accept', async (req, res) => {
+app.post('/interview/:id/slot/:number', async (req, res) => {
   const interview = await InterviewService.find(req.params.id).catch((err) => console.log(err));
-  const slotIndex = Number(req.params.number) - 1 //subtract one for index
-  const finalInterviewTime = interview.scheduleOptions[slotIndex];
-  const updatedInterview = await InterviewService.updateOne(interview._id, { finalInterviewSlot: finalInterviewTime }).catch((err) => console.log(err));
-
-  const job = await JobService.find(interview.job).catch((err) => console.log(err));
-  const employer = await EmployerService.find(job.employer).catch((err) => console.log(err));
-  const updatedInbox = employer.inbox;
-
-  // notification is sent to employer
-  const message = `An interview for the following job post: ${job._id} has been accepted. appointment time: ${finalInterviewTime}`;
-  const time = Date();
-  const opened = false;
-  const notification = await NotificationService.add({message: message, time: time, application: interview.application, opened: opened}).catch((err) => console.log(err));
-
-  updatedInbox.push(notification);
-  const updatedEmployer = await EmployerService.updateOne(employer._id, { inbox: updatedInbox }).catch((err) => console.log(err));
+  const updatedInterview = await InterviewService.acceptAndFinalizeTime(interview, req.params.number);
 
   res.send(updatedInterview);
-  console.log(updatedEmployer);
 });
-
-// axios.post('/interview/5dc5fe1bb86c5716604c0a46/slot/1/accept').then(console.log);
+// axios.post('/interview/5dc5fe1bb86c5716604c0a46/slot/1').then(console.log);
 
 // employer updates application status, notifications sent to applicant
 app.post('/job/:id/application/:applicationId/status', async (req, res) => {
