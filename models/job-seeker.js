@@ -18,10 +18,6 @@ const JobSeekerSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Resume',
   }],
-  interviews: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Interview',
-  }],
   inbox: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Notification',

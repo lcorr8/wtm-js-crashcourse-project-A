@@ -1,9 +1,10 @@
 const ApplicationStatuses = Object.freeze({
+  Started: 'started',
+  Submitted: 'submitted',
+  InterviewOffered: 'interviewOffered',
   Accepted: 'accepted',
   Pending: 'pending',
   Declined: 'declined',
-  Started: 'started',
-  Submitted: 'submitted',
 });
 
 const JobCategories = Object.freeze({

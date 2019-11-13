@@ -39,10 +39,6 @@ const JobSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Application',
   }],
-  interviews: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Interview',
-  }],
 });
 
 module.exports = mongoose.model('Job', JobSchema);

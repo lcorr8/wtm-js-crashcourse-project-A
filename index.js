@@ -54,9 +54,11 @@ app.use(JobSeekerRoutes);
  * [DONE] job seeker submits an application to a given job
  *    [DONE] application gets added to job applications list
  *    [DONE] notification is sent to employer
+ * [DONE] employer offers an interview:
+ *    [DONE] add interview to db
+ *    [DONE] add interview to application, update status
+ *    [DONE] notification is sent to jobseeker
  *
- * [-] employer offers an interview
- *    [-] notification is sent to jobseeker
  * [-] job seeker accepts interview
  *    [-] notification is sent to employer
  *
@@ -73,7 +75,6 @@ app.post('/employer/:id', async (req, res) => {
   const job = await EmployerService.addJob(employer, jobParams);
   res.send(job);
 });
-
 // axios.post('/employer/5dc57b75c88a00e5aed4ac64/', {
 //   title: "title...",
 //   description: "description...",
@@ -129,45 +130,14 @@ app.post('/application/:applicationId/submit', async (req, res) => {
 
 
 // employer offers an interview
-app.post('/application/:id/interview/new', async (req, res) => {
+app.post('/application/:id/interview', async (req, res) => {
   const application = await ApplicationService.find(req.params.id).catch((err) => console.log(err));
-  const jobId = application.job;
-  const jobseekerId = application.jobSeeker;
-
-  // add interview to db
-  const updatedRequestBody = req.body;
-  updatedRequestBody.jobSeeker = jobseekerId;
-  updatedRequestBody.job = jobId;
-  updatedRequestBody.application = application;
-  const interview = await InterviewService.add(updatedRequestBody).catch((err) => console.log(err));
-
-  // add interview to application
-  const updatedApplication = await ApplicationService.updateOne(application._id, {interview: interview});
-
-  // add interview to job interviews array
-  const job = await JobService.find(jobId).catch((err) => console.log(err));
-  job.interviews.push(interview);
-  const updatedJob = await JobService.updateOne(job._id, {interviews: job.interviews}).catch((err) => console.log(err));;
-
-  // add interview to jobseekers interviews array
-  const jobSeeker = await JobSeekerService.find(jobseekerId).catch((err) => console.log(err));
-  const updatedJobseekerInterviews = jobSeeker.interviews;
-  updatedJobseekerInterviews.push(interview);
-  // notification is sent to jobseeker
-  const message = `You have received an interview for the following job post: ${jobId}`
-  const time = Date();
-  const opened = false;
-  const notification = await NotificationService.add({message: message, time: time, application: application, opened: opened}).catch((err) => console.log(err));
-  const updatedNotifications = jobSeeker.inbox;
-  updatedNotifications.push(notification);
-  // update jobseeker
-  const updatedJobSeeker = await JobSeekerService.updateOne(jobseekerId, {interviews: updatedJobseekerInterviews, inbox: updatedNotifications}).catch((err) => console.log(err));
+  const scheduleOptions = req.body;
+  const interview = await InterviewService.addToApplication(application, scheduleOptions);
 
   res.send(interview);
-  console.log(updatedJobSeeker);
 });
-
-// axios.post('/application/5dc5eb18ef8725127c365f4a/interview/new', {
+// axios.post('/application/5dc5eb18ef8725127c365f4a/interview', {
 //   scheduleOptions: [new Date("december 3, 2019 11:30"), new Date("december 4, 2019 15:30"), new Date("december 5, 2019 17:30")],
 // }).then(console.log);
 
