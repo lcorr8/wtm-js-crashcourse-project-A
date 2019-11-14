@@ -13,9 +13,15 @@ open [localhost:3000](http://localhost:3000/)
 
 
 ### Classes
+Below please find the classes with the plain CRUD routes for each model. Go to section [Complex interactions from week 5](#-complex-interactions-from-week-5) to see complex interactions axios post requests.
 - employer
     - all [localhost:3000/employer/all](http://localhost:3000/employer/all)
+        - `axios.get('/employer/all').then(console.log);`
     - by id, where `:id` should be replaced by actual id [localhost:3000/employer/:id](http://localhost:3000/joemployerb/all)
+        - `axios.get('/employer/:id').then(console.log);`
+    - `axios.post('/employer', { email: 'headmaster@hogwarts.edu' }).then(console.log);`
+    - `axios.put('/employer/:id', { email: 'HeadMaster@hogwarts.edu' }).then(console.log);`
+    - `axios.delete('/employer/:id').then(console.log);`
 - job ad
     - all [localhost:3000/job/all](http://localhost:3000/job/all)
     - by id, where `:id` should be replaced by actual id [localhost:3000/job/:id](http://localhost:3000/job/all)
@@ -24,7 +30,12 @@ open [localhost:3000](http://localhost:3000/)
     - by id, where `:id` should be replaced by actual id [localhost:3000/interview/:id](http://localhost:3000/interview/all)
 - job seeker
     - all [localhost:3000/jobseeker/all](http://localhost:3000/jobseeker/all)
+        - `axios.get('/jobseeker/all').then(console.log);`
     - by id, where `:id` should be replaced by actual id [localhost:3000/jobseeker/:id](http://localhost:3000/jobseeker/all)
+        - `axios.get('/jobseeker/:id').then(console.log);`
+    - `axios.post('/jobseeker', { name: 'Dobby', email: 'Dobby@freedom.com' }).then(console.log);`
+    - `axios.put('/jobseeker/:id', { name: 'Dobby The Elf' }).then(console.log);`
+    - `axios.delete('/jobseeker/:id').then(console.log);`
 - application
     - all [localhost:3000/application/all](http://localhost:3000/application/all)
     - by id, where `:id` should be replaced by actual id [localhost:3000/application/:id](http://localhost:3000/application/all)
@@ -33,7 +44,7 @@ open [localhost:3000](http://localhost:3000/)
     - by id, where `:id` should be replaced by actual id [localhost:3000/notification/:id](http://localhost:3000/notification/all)
 
 ### Interactions
-
+Minimum expected interactions to be built into the job application service:
 
 #### Employer
 - can create job ads
@@ -72,24 +83,38 @@ open [localhost:3000](http://localhost:3000/)
 - can be sent to an inbox (job seeker, employer)
 
 
-### complex interaction routes from week 5
-Application utilizes axios. Sample requests can be found in index.js below the given routes. To run the interactions you can copy paste the axios requests in your browser's console. NOTE: please ensure you have created a few db entries if you are for example querying for a given zipcode
-- employer creates a job listing, job gets added to employer's list 
+# complex interactions from week 5
+Application utilizes axios. Sample requests can also be found in index.js below the given routes. To run the interactions you can copy paste the axios requests in your browser's console. 
+
+NOTE: please ensure you have created a few db entries if you are for example querying for a job with a given zipcode.
+
+- employer creates a job listing, job gets added to employer's list
+    - requires an employer to exist first: `axios.post('/employer', { email: 'headmaster@hogwarts.edu' }).then(console.log);`
+    - create job listing: `axios.post('/employer/:id/', { title: "Head Chef", description: "Creating new menus for each holiday feast and supervising kitchen", zipcode: "10117", category: "kitchen", jobType: "full-time", compensationMin: 12, compensationMax: 18, tips: false }).then(console.log);`
 - job search route
+    - `axios.get('/jobs/?zipcode=10117&jobType=full-time&tips=false&category=kitchen').catch(err => console.log(err));`
+    - for querying multiple zipcodes for example use a request like so: `axios.get('/jobs/?zipcode[]=10117&zipcode[]=10118&category=kitchen').catch(err => console.log(err));`
 - jobseeker starts application
-    - app gets added to jobseeker
+    - requires a job seeker to exist first `axios.post('/jobseeker', { name: 'Dobby', email: 'Dobby@freedom.com' }).then(console.log);`
+    - app gets added to jobseeker: `axios.post('/jobseeker/:id/job/:jobId/application', { yearsOfExperience: 25, languagesSpoken: "English", otherSkills: "Housekeeping", interviewAvailability: "Available any time monday-saturday between 8am and 8pm" }).then(console.log)`
 - job seeker submits an application to a given job
     - application gets added to job applications list
     - notification is sent to employer
+    - `axios.post('/application/:id/submit').then(console.log);`
 - employer offers an interview:
     - create interview
     - add interview to application, update status
     - notification is sent to jobseeker
+    - `axios.post('/application/:id/interview', { scheduleOptions: [new Date("december 3, 2019 11:30"), new Date("december 4, 2019 15:30"), new Date("december 5, 2019 17:30")] }).then(console.log);`
 - job seeker accepts interview
     - notification is sent to employer
     - application status is updated
+    - `axios.post('/interview/:id/slot/1').then(console.log);`
 - employer updates application status after interview
     - if accepted: notifications sent to applicant
+    - `axios.post('/application/:id/status', {status: 'declined'}).then(console.log);`
+    - `axios.post('/application/:id/status', {status: 'pending'}).then(console.log);`
+    - `axios.post('/application/:id/status', {status: 'accepted'}).then(console.log);`
 
  ### pending complex routes to add
  - TODO: user management

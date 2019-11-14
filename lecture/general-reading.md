@@ -12,3 +12,4 @@
 9. [promise basics](https://javascript.info/promise-basics)
 10. [How to Build a RESTful API using Node, Express, and Mongo (video review)
 ](https://www.youtube.com/watch?v=o3ka5fYysBM&t=3966s)
+11. [30 seconds of code](https://github.com/30-seconds/30-seconds-of-code)
