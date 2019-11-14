@@ -13,7 +13,7 @@ open [localhost:3000](http://localhost:3000/)
 
 
 ### Classes
-Below please find the classes with the plain CRUD routes for each model. Go to section [Complex interactions from week 5](#-complex-interactions-from-week-5) to see complex interactions axios post requests.
+Below please find the classes with the plain CRUD routes for each model. Go to section [Complex interactions from week 5](#Complex-interactions-from-week-5) to see complex interactions axios post requests.
 - employer
     - all [localhost:3000/employer/all](http://localhost:3000/employer/all)
         - `axios.get('/employer/all').then(console.log);`
@@ -83,7 +83,7 @@ Minimum expected interactions to be built into the job application service:
 - can be sent to an inbox (job seeker, employer)
 
 
-# complex interactions from week 5
+# Complex interactions from week 5
 Application utilizes axios. Sample requests can also be found in index.js below the given routes. To run the interactions you can copy paste the axios requests in your browser's console. 
 
 NOTE: please ensure you have created a few db entries if you are for example querying for a job with a given zipcode.
