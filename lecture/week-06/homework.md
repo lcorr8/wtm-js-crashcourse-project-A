@@ -1,6 +1,9 @@
-# Week 6 HW
-- use ava, nyc to e2e test your api
-- try to get 100% line coverage
+# Week 6 HW - Testing
+- :white_check_mark: implement ava, nyc, supertest npm packages to e2e test your api
+- try to get 100% line coverage...currently about 80%
+    - CRUD interview
+    - complex routes
+    - brownie points: refactor application, interview and notification to use actual instances instead of ids
 
 ## Leftover tasks to improve app:
 
