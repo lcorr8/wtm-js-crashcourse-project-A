@@ -46,10 +46,10 @@ test('Fetch a job', async t => {
   t.plan(2);
 
   const employerCreated = (await request(app)
-  .post('/employer')
-  .send(employerToCreate)).body;
+    .post('/employer')
+    .send(employerToCreate)).body;
 
-  jobToCreate.employer = employerCreated._id
+  jobToCreate.employer = employerCreated._id;
 
   const jobCreated = (await request(app)
     .post('/job')
@@ -58,9 +58,80 @@ test('Fetch a job', async t => {
   const fetchRes = await request(app)
     .get(`/job/${jobCreated._id}/json`);
 
-    const jobFetched = fetchRes.body;
+  const jobFetched = fetchRes.body;
 
   t.is(fetchRes.status, 200);
   t.deepEqual(jobFetched, jobCreated, 'fetched job matches created job');
 });
 
+test('Fetch all jobs', async t => {
+  t.plan(3);
+
+  const employerCreated = (await request(app)
+    .post('/employer')
+    .send(employerToCreate)).body;
+
+  jobToCreate.employer = employerCreated._id;
+
+  await request(app)
+    .post('/job')
+    .send(jobToCreate);
+
+  const fetchRes = await request(app).get('/employer/all/json');
+
+  t.is(fetchRes.status, 200);
+  t.true(Array.isArray(fetchRes.body), 'Body should be an array');
+  t.true(fetchRes.body.length > 0);
+});
+
+test('update a job', async t => {
+  t.plan(2);
+
+  const jobUpdate = {
+    jobType: 'freelance',
+  };
+
+  const employerCreated = (await request(app)
+    .post('/employer')
+    .send(employerToCreate)).body;
+
+  jobToCreate.employer = employerCreated._id;
+
+  const jobCreated = (await request(app)
+    .post('/job')
+    .send(jobToCreate)).body;
+
+  const updatedJob = await request(app)
+    .put(`/job/${jobCreated._id}`)
+    .send(jobUpdate);
+
+  t.is(updatedJob.status, 200);
+  t.deepEqual(updatedJob.body.jobType, jobUpdate.jobType);
+});
+
+test('delete an employer', async t => {
+  t.plan(3);
+
+  const employerCreated = (await request(app)
+    .post('/employer')
+    .send(employerToCreate)).body;
+
+  jobToCreate.employer = employerCreated._id;
+
+  const jobCreated = (await request(app)
+    .post('/job')
+    .send(jobToCreate)).body;
+
+  const deletionResponse = await request(app)
+    .delete(`/job/${jobCreated._id}`);
+
+  const fetchedJobs = (await request(app).get('/job/all/json')).body;
+
+  const fetchedJobsFilteredArray = fetchedJobs.filter(item => {
+    item._id === jobCreated._id
+  });
+
+  t.is(deletionResponse.status, 200);
+  t.true(Array.isArray(fetchedJobsFilteredArray), 'should be an array');
+  t.true(fetchedJobsFilteredArray.length === 0);
+});
