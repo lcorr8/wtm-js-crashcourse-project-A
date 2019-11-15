@@ -9,6 +9,8 @@ const NotificationToCreate = {
   application: '5dcf08bb0caab1999b3000a8',
 };
 
+// TODO: create an actual application instead of mocking one
+
 test('create new notification', async t => {
   t.plan(3);
 

@@ -77,7 +77,7 @@ test('Fetch all jobs', async t => {
     .post('/job')
     .send(jobToCreate);
 
-  const fetchRes = await request(app).get('/employer/all/json');
+  const fetchRes = await request(app).get('/job/all/json');
 
   t.is(fetchRes.status, 200);
   t.true(Array.isArray(fetchRes.body), 'Body should be an array');
@@ -109,8 +109,8 @@ test('update a job', async t => {
   t.deepEqual(updatedJob.body.jobType, jobUpdate.jobType);
 });
 
-test('delete an employer', async t => {
-  t.plan(3);
+test('delete a job', async t => {
+  t.plan(2);
 
   const employerCreated = (await request(app)
     .post('/employer')
@@ -125,13 +125,6 @@ test('delete an employer', async t => {
   const deletionResponse = await request(app)
     .delete(`/job/${jobCreated._id}`);
 
-  const fetchedJobs = (await request(app).get('/job/all/json')).body;
-
-  const fetchedJobsFilteredArray = fetchedJobs.filter(item => {
-    item._id === jobCreated._id
-  });
-
   t.is(deletionResponse.status, 200);
-  t.true(Array.isArray(fetchedJobsFilteredArray), 'should be an array');
-  t.true(fetchedJobsFilteredArray.length === 0);
+  t.is(deletionResponse.text, 'job deleted!');
 });

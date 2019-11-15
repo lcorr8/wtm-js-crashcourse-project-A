@@ -39,7 +39,7 @@ router.put('/jobseeker/:id', async (req, res) => {
 
 router.delete('/jobseeker/:id', async (req, res) => {
   const jobseeker = await JobSeekerService.deleteOne({ _id: req.params.id }).catch((err) => console.log(err));
-  res.send(jobseeker);
+  res.send('job seeker deleted!');
 });
 // axios.delete('/jobseeker/:id').then(console.log);
 

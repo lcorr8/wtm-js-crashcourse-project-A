@@ -69,7 +69,7 @@ test('update a job seeker', async t => {
 });
 
 test('delete a job seeker', async t => {
-  t.plan(3);
+  t.plan(2);
 
   const jobSeekerCreated = (await request(app)
     .post('/jobseeker')
@@ -78,13 +78,6 @@ test('delete a job seeker', async t => {
   const deletionResponse = await request(app)
     .delete(`/jobseeker/${jobSeekerCreated._id}`);
 
-  const fetchedJobSeekers = (await request(app).get('/jobseeker/all/json')).body;
-
-  const fetchedJobSeekerFilteredArray = fetchedJobSeekers.filter(jobseeker => {
-    jobseeker._id === jobSeekerCreated._id
-  });
-
   t.is(deletionResponse.status, 200);
-  t.true(Array.isArray(fetchedJobSeekerFilteredArray), 'should be an array');
-  t.true(fetchedJobSeekerFilteredArray.length === 0);
+  t.is(deletionResponse.text, 'job seeker deleted!');
 });

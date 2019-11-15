@@ -66,7 +66,7 @@ test('update an employer', async t => {
 });
 
 test('delete an employer', async t => {
-  t.plan(3);
+  t.plan(2);
 
   const employerCreated = (await request(app)
     .post('/employer')
@@ -75,13 +75,6 @@ test('delete an employer', async t => {
   const deletionResponse = await request(app)
     .delete(`/employer/${employerCreated._id}`);
 
-  const fetchedEmployers = (await request(app).get('/employer/all/json')).body;
-
-  const fetchedEmployersFilteredArray = fetchedEmployers.filter(employer => {
-    employer._id === employerCreated._id
-  });
-
   t.is(deletionResponse.status, 200);
-  t.true(Array.isArray(fetchedEmployersFilteredArray), 'should be an array');
-  t.true(fetchedEmployersFilteredArray.length === 0);
+  t.is(deletionResponse.text, 'employer deleted!');
 });

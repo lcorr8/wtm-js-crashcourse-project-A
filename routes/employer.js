@@ -43,7 +43,7 @@ router.put('/employer/:id', async (req, res) => {
 
 router.delete('/employer/:id', async (req, res) => {
   const employer = await EmployerService.deleteOne({ _id: req.params.id }).catch((err) => console.log(err));
-  res.send(employer);
+  res.send('employer deleted!');
   console.log(req.body);
 });
 // axios.delete('/employer/:id').then(console.log);

@@ -36,7 +36,7 @@ router.put('/job/:id', async (req, res) => {
 
 router.delete('/job/:id', async (req, res) => {
   const job = await JobService.deleteOne({ _id: req.params.id }).catch((err) => console.log(err));
-  res.send(job);
+  res.send('job deleted!');
 });
 
 module.exports = router;
