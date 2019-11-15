@@ -4,7 +4,8 @@
   "description": "Job Application Service",
   "main": "index.js",
   "scripts": {
-    "test": "nyc ava --verbose",
+    "test": "ava --verbose",
+    "test-coverage": "nyc ava --verbose",
     "test-watch": "nyc ava --verbose --watch",
     "lint": "eslint **/*.js"
   },
