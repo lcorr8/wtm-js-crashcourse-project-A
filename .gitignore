@@ -1,9 +1,16 @@
 .vscode/
+/node_modules
+
 lecture/week-02/node_modules
+
+#mock db
 application.json
 employer.json
 interview.json
 job.json
 jobSeeker.json
 notification.json
-/node_modules
+
+# for nyc package
+.nyc_output
+coverage

@@ -1,3 +1,7 @@
+# Week 6 HW
+- use ava, nyc to e2e test your api
+- try to get 100% line coverage
+
 ## Leftover tasks to improve app:
 
 1. implement better error handling (HOL) [Wes Bos async + await in Js Talk (around min 12:15)](https://www.youtube.com/watch?v=DwQJ_NPQWWo)
