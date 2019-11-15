@@ -32,7 +32,7 @@ test('Fetch an employer', async t => {
   t.deepEqual(employerFetched, employerCreated, 'fetched employer matched created employer');
 });
 
-test('Fetch all emloyers', async t => {
+test('Fetch all employers', async t => {
   t.plan(3);
 
   await request(app)

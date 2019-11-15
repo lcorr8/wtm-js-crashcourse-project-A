@@ -4,8 +4,11 @@ const JobSeekerService = require('../services/job-seeker-service');
 
 router.get('/jobseeker/all', async (req, res) => {
   const jobseekers = await JobSeekerService.findAll();
-  // res.send(jobseekers);
   res.render('job-seekers', { jobseekers });
+});
+router.get('/jobseeker/all/json', async (req, res) => {
+  const jobseekers = await JobSeekerService.findAll();
+  res.send(jobseekers);
 });
 // axios.get('/jobseeker/all').then(console.log);
 
@@ -13,6 +16,10 @@ router.get('/jobseeker/:id', async (req, res) => {
   const jobseeker = await JobSeekerService.find({ _id: req.params.id });
   // res.send(jobseeker)
   res.render('job-seeker', { jobseeker });
+});
+router.get('/jobseeker/:id/json', async (req, res) => {
+  const jobseeker = await JobSeekerService.find({ _id: req.params.id });
+  res.send(jobseeker)
 });
 // axios.get('/jobseeker/:id').then(console.log);
 
