@@ -44,7 +44,7 @@ app.use(JobSeekerRoutes);
 app.post('/employer/:id', async (req, res) => {
   const employer = await EmployerService.find(req.params.id).catch((err) => console.log(err));
   const jobParams = req.body;
-  const job = await EmployerService.addJob(employer, jobParams);
+  const job = await EmployerService.addJob(employer, jobParams).catch((err) => console.log(err));
   res.send(job);
 });
 // axios.post('/employer/5dc57b75c88a00e5aed4ac64/', {
@@ -138,3 +138,5 @@ app.post('/application/:id/status', async (req, res) => {
 // axios.post('/application/:id/status', {status: 'declined'}).then(console.log);
 // axios.post('/application/:id/status', {status: 'pending'}).then(console.log);
 // axios.post('/application/:id/status', {status: 'accepted'}).then(console.log);
+
+module.exports = app;
