@@ -31,7 +31,7 @@
 
 15. the following is a raw query: `await ApplicationService.updateOne(id, { status })` — routes shouldn’t use raw queries, encapsulate this functionality in the service or the model itself. you could use something like `ApplicationService.setApplicationStatus(application, status)` or  `application.setStatus(statusName)` 
 
-16. instead of using `InterviewService.addToApplication` you could prefer `ApplicationService.addInterview` or better yet application.addInterview
+16. :white_check_mark: instead of using `InterviewService.addToApplication` you could prefer `ApplicationService.addInterview` or better yet application.addInterview
 
 sample try/catch block:
 

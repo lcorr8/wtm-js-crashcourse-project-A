@@ -4,6 +4,7 @@ const Enums = require('../helpers/enums');
 const EmployerService = require('../services/employer-service')
 const NotificationService = require('../services/notification-service')
 const JobSeekerService = require('../services/job-seeker-service')
+const InterviewService = require('../services/interview-service')
 
 class ApplicationService extends BaseService {
   model = ApplicationModel;
@@ -44,6 +45,31 @@ class ApplicationService extends BaseService {
 
     return updatedApplication
   };
+
+  /**
+   * Employer offers jobseeker an interview:
+   * create interview in db,
+   * add interview to application and update app status
+   * notification is sent to jobseeker
+   * @param {*} interviewParams obj with array of 3 optional dates for interview, and the application id.
+   */
+  async addInterview(params){
+    const application = await this.find(params.application).catch((err) => console.log(err));
+    const interviewParams = { ...params, job: application.job, jobSeeker: application.jobSeeker};
+    const interview = await InterviewService.add(interviewParams);
+    
+    const updatedApplication = await this.updateOne(application._id, {
+      interview: interview, 
+      status: Enums.ApplicationStatuses.InterviewOffered
+    });
+
+    const jobSeeker = await JobSeekerService.find(application.jobSeeker);
+    const message = `You have received an interview for the following job post: ${application.job}`
+    await NotificationService.sendNotification(jobSeeker, application, message);
+
+    console.log('updated application: ', updatedApplication)
+    return interview
+  }
 }
 
 module.exports = new ApplicationService();

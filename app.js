@@ -40,18 +40,6 @@ app.use('/job-seeker', JobSeekerRoutes);
 
 // ------------------------------------Complex Interaction Endpoints -------------------------------
 
-// employer offers an interview, interview added to application and application status updated
-app.post('/application/:id/interview', async (req, res) => {
-  const application = await ApplicationService.find(req.params.id).catch((err) => console.log(err));
-  const scheduleOptions = req.body;
-  const interview = await InterviewService.addToApplication(application, scheduleOptions);
-
-  res.send(interview);
-});
-// axios.post('/application/5dc5eb18ef8725127c365f4a/interview', {
-//   scheduleOptions: [new Date("december 3, 2019 11:30"), new Date("december 4, 2019 15:30"), new Date("december 5, 2019 17:30")],
-// }).then(console.log);
-
 // job seeker accepts interview by selecting a final interview slot, application status is updated, and notification is sent to employer
 app.post('/interview/:id/slot/:number', async (req, res) => {
   const interview = await InterviewService.find(req.params.id).catch((err) => console.log(err));
