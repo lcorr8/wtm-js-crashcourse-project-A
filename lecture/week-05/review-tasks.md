@@ -12,7 +12,7 @@
 
 6. the complex endpoints should also be in your routes file.
 
-7. .post('/employer/:id shouldn’t create a job listing — the url, in  the worst case, should look like .post('/employer/:id/jobs, however you already have a router for jobs — and you already have a `.post('/job'` there — i think the first one is redundant.
+7. :white_check_mark: `.post('/employer/:id` shouldn’t create a job listing — the url, in  the worst case, should look like `.post('/employer/:id/jobs`, however you already have a router for jobs — and you already have a `.post('/job'` there — i think the first one is redundant.
 
 8. in index.js, on line 67, you’re sending back the query for /jobs?, instead it should be `res.send(jobs)`, or the commented out line next,  `res.render('jobs', { jobs })`
 

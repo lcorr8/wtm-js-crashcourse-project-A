@@ -40,24 +40,6 @@ app.use('/job-seeker', JobSeekerRoutes);
 
 // ------------------------------------Complex Interaction Endpoints -------------------------------
 
-// employer creates a job listing, job gets added to employer's list
-app.post('/employer/:id', async (req, res) => {
-  const employer = await EmployerService.find(req.params.id).catch((err) => console.log(err));
-  const jobParams = req.body;
-  const job = await EmployerService.addJob(employer, jobParams).catch((err) => console.log(err));
-  res.send(job);
-});
-// axios.post('/employer/5dc57b75c88a00e5aed4ac64/', {
-//   title: "title...",
-//   description: "description...",
-//   zipcode: "10117",
-//   category: "kitchen",
-//   jobType: "full-time",
-//   compensationMin: 12,
-//   compensationMax: 12,
-//   tips: true,
-// }).then(console.log)
-
 // job search route
 app.get('/jobs?', async (req, res) => {
   const { query } = req;
