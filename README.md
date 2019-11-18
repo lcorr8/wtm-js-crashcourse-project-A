@@ -29,13 +29,13 @@ Below please find the classes with the plain CRUD routes for each model. Go to s
     - all [localhost:3000/interview/all](http://localhost:3000/interview/all)
     - by id, where `:id` should be replaced by actual id [localhost:3000/interview/:id](http://localhost:3000/interview/all)
 - job seeker
-    - all [localhost:3000/jobseeker/all](http://localhost:3000/jobseeker/all)
-        - `axios.get('/jobseeker/all').then(console.log);`
-    - by id, where `:id` should be replaced by actual id [localhost:3000/jobseeker/:id](http://localhost:3000/jobseeker/all)
-        - `axios.get('/jobseeker/:id').then(console.log);`
-    - `axios.post('/jobseeker', { name: 'Dobby', email: 'Dobby@freedom.com' }).then(console.log);`
-    - `axios.put('/jobseeker/:id', { name: 'Dobby The Elf' }).then(console.log);`
-    - `axios.delete('/jobseeker/:id').then(console.log);`
+    - all [localhost:3000/job-seeker/all](http://localhost:3000/job-seeker/all)
+        - `axios.get('/job-seeker/all').then(console.log);`
+    - by id, where `:id` should be replaced by actual id [localhost:3000/job-seeker/:id](http://localhost:3000/job-seeker/all)
+        - `axios.get('/job-seeker/:id').then(console.log);`
+    - `axios.post('/job-seeker', { name: 'Dobby', email: 'Dobby@freedom.com' }).then(console.log);`
+    - `axios.put('/job-seeker/:id', { name: 'Dobby The Elf' }).then(console.log);`
+    - `axios.delete('/job-seeker/:id').then(console.log);`
 - application
     - all [localhost:3000/application/all](http://localhost:3000/application/all)
     - by id, where `:id` should be replaced by actual id [localhost:3000/application/:id](http://localhost:3000/application/all)
@@ -95,8 +95,8 @@ NOTE: please ensure you have created a few db entries if you are for example que
     - `axios.get('/jobs/?zipcode=10117&jobType=full-time&tips=false&category=kitchen').catch(err => console.log(err));`
     - for querying multiple zipcodes for example use a request like so: `axios.get('/jobs/?zipcode[]=10117&zipcode[]=10118&category=kitchen').catch(err => console.log(err));`
 - jobseeker starts application
-    - requires a job seeker to exist first `axios.post('/jobseeker', { name: 'Dobby', email: 'Dobby@freedom.com' }).then(console.log);`
-    - app gets added to jobseeker: `axios.post('/jobseeker/:id/job/:jobId/application', { yearsOfExperience: 25, languagesSpoken: "English", otherSkills: "Housekeeping", interviewAvailability: "Available any time monday-saturday between 8am and 8pm" }).then(console.log)`
+    - requires a job seeker to exist first `axios.post('/job-seeker', { name: 'Dobby', email: 'Dobby@freedom.com' }).then(console.log);`
+    - app gets added to jobseeker: `axios.post('/job-seeker/:id/job/:jobId/application', { yearsOfExperience: 25, languagesSpoken: "English", otherSkills: "Housekeeping", interviewAvailability: "Available any time monday-saturday between 8am and 8pm" }).then(console.log)`
 - job seeker submits an application to a given job
     - application gets added to job applications list
     - notification is sent to employer

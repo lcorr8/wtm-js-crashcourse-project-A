@@ -8,7 +8,7 @@
 4. you don’t need `Object.assign` in const `interviewParams = Object.assign(scheduleOptions,{job: application.job, application: application,jobSeeker: application.jobSeeker})`. the following also works:
 `const interviewParams = {...scheduleOptions, job: application.job, application: application,jobSeeker: application.jobSeeker}`
 
-5. in your index.js, while defining your routes, you should use root url’s — instead of app.use(EmployerRoutes);, write `app.use('/employer', EmployerRoutes);` so that you don’t have to repeat /employer in all your routes in routes/employer.js
+5. :white_check_mark: in your index.js, while defining your routes, you should use root url’s — instead of app.use(EmployerRoutes);, write `app.use('/employer', EmployerRoutes);` so that you don’t have to repeat /employer in all your routes in routes/employer.js
 
 6. the complex endpoints should also be in your routes file.
 
@@ -18,7 +18,7 @@
 
 9. again, this handler should be under `routes/job.js`
 
-10. use kebab-case in the url, localhost:3000/jobseeker should b e `localhost:3000/job-seeker`
+10. :white_check_mark: use kebab-case in the url, localhost:3000/jobseeker should b e `localhost:3000/job-seeker`
 
 11. you’re getting a Maximum call stack size exceeded while trying to create a job or apply to it 
 
@@ -26,11 +26,11 @@
 
 13. i’m not sure why you’re getting a max call stack size exceeded, but a way to fix it is to replace the line jobseeker.applications.push(application); with jobseeker.applications.push(application._id); in services/application-service.js — basically, instead of pushing the entire application, just push the id. works the same.
 
-14. for submitting applications in app.post('/application/:applicationId/submit', I see that you’re finding the job via its _id, this should be unnecessary if you autopopulate the job field in applications. also, ApplicationService.submitApplication should return the updated application, so that you don’t need line 97 where you find the same application again.
+14. for submitting applications in `app.post('/application/:applicationId/submit'`, I see that you’re finding the job via its _id, this should be unnecessary if you autopopulate the job field in applications. also, `ApplicationService.submitApplication` should return the updated application, so that you don’t need line 97 where you find the same application again.
 
-15. the following is a raw query: await ApplicationService.updateOne(id, { status }) — routes shouldn’t use raw queries, encapsulate this functionality in the service or the model itself. you could use something like ApplicationService.setApplicationStatus(application, status) or  application.setStatus(statusName) (edited) 
+15. the following is a raw query: `await ApplicationService.updateOne(id, { status })` — routes shouldn’t use raw queries, encapsulate this functionality in the service or the model itself. you could use something like `ApplicationService.setApplicationStatus(application, status)` or  `application.setStatus(statusName)` 
 
-16. instead of using InterviewService.addToApplication you could prefer ApplicationService.addInterview or better yet application.addInterview
+16. instead of using `InterviewService.addToApplication` you could prefer `ApplicationService.addInterview` or better yet application.addInterview
 
 sample try/catch block:
 

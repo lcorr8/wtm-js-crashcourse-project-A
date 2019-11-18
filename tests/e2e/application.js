@@ -44,7 +44,7 @@ async function testSetUp(employerParams, jobParams, jobSeekerParams, application
     .send(jobParams)).body;
 
   const jobSeekerCreated = (await request(app)
-    .post('/jobseeker')
+    .post('/job-seeker')
     .send(jobSeekerParams)).body;
 
   applicationParams.job = jobCreated._id;

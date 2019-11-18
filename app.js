@@ -31,12 +31,12 @@ app.get('/', (req, res) => {
 });
 
 // registering basic CRUD routes for all models
-app.use(EmployerRoutes);
-app.use(NotificationRoutes);
-app.use(ApplicationRoutes);
-app.use(InterviewRoutes);
-app.use(JobRoutes);
-app.use(JobSeekerRoutes);
+app.use('/employer', EmployerRoutes);
+app.use('/notification', NotificationRoutes);
+app.use('/application', ApplicationRoutes);
+app.use('/interview', InterviewRoutes);
+app.use('/job', JobRoutes);
+app.use('/job-seeker', JobSeekerRoutes);
 
 // ------------------------------------Complex Interaction Endpoints -------------------------------
 
