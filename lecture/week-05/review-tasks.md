@@ -14,9 +14,9 @@
 
 7. :white_check_mark: `.post('/employer/:id` shouldn’t create a job listing — the url, in  the worst case, should look like `.post('/employer/:id/jobs`, however you already have a router for jobs — and you already have a `.post('/job'` there — i think the first one is redundant.
 
-8. in index.js, on line 67, you’re sending back the query for /jobs?, instead it should be `res.send(jobs)`, or the commented out line next,  `res.render('jobs', { jobs })`
+8. :white_check_mark: in index.js, on line 67, you’re sending back the query for /jobs?, instead it should be `res.send(jobs)`, or the commented out line next,  `res.render('jobs', { jobs })`
 
-9. again, this handler should be under `routes/job.js`
+9. :white_check_mark: again, this handler should be under `routes/job.js`
 
 10. :white_check_mark: use kebab-case in the url, localhost:3000/jobseeker should b e `localhost:3000/job-seeker`
 

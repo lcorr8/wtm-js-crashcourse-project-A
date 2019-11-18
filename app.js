@@ -40,18 +40,6 @@ app.use('/job-seeker', JobSeekerRoutes);
 
 // ------------------------------------Complex Interaction Endpoints -------------------------------
 
-// job search route
-app.get('/jobs?', async (req, res) => {
-  const { query } = req;
-  const jobs = await JobService.findAll(query);
-  console.log(query);
-  console.log(jobs);
-  res.send(query);
-  // res.render('jobs', { jobs });
-});
-// axios.get('/jobs/?zipcode=10117&jobType=full-time&tips=true&category=bar').catch(err => console.log(err));
-// axios.get('/jobs/?zipcode[]=10117&zipcode[]=10118&jobType=part-time&tips=true&category=bar').catch(err => console.log(err));
-
 // job seeker starts application, application gets added to job seeker
 app.post('/jobseeker/:id/job/:jobId/application/', async (req, res) => {
   const jobseeker = await JobSeekerService.find(req.params.id).catch((err) => console.log(err));

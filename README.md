@@ -25,6 +25,12 @@ Below please find the classes with the plain CRUD routes for each model. Go to s
 - job ad
     - all [localhost:3000/job/all](http://localhost:3000/job/all)
     - by id, where `:id` should be replaced by actual id [localhost:3000/job/:id](http://localhost:3000/job/all)
+    - job search route
+        - `axios.get('/job/?zipcode=10117&jobType=full-time&tips=false&category=kitchen').catch(err => console.log(err));`
+        - for querying multiple zipcodes for example use a request like so: `axios.get('/job/?zipcode[]=10117&zipcode[]=10118&category=kitchen').catch(err => console.log(err));`
+    - job ad creation, job gets added to employer's list
+        - requires an employer to exist first: `axios.post('/employer', { email: 'headmaster@hogwarts.edu' }).then(console.log);`
+        - create job listing: `axios.post('/job', { title: "Head Chef", description: "Creating new menus for each holiday feast and supervising kitchen", zipcode: "10117", category: "kitchen", jobType: "full-time", compensationMin: 12, compensationMax: 18, tips: false, employer: "5dc495951aadb880e40e7fd1" }).then(console.log);`
 - interview
     - all [localhost:3000/interview/all](http://localhost:3000/interview/all)
     - by id, where `:id` should be replaced by actual id [localhost:3000/interview/:id](http://localhost:3000/interview/all)
@@ -88,12 +94,6 @@ Application utilizes axios. Sample requests can also be found in index.js below 
 
 NOTE: please ensure you have created a few db entries if you are for example querying for a job with a given zipcode.
 
-- employer creates a job listing, job gets added to employer's list
-    - requires an employer to exist first: `axios.post('/employer', { email: 'headmaster@hogwarts.edu' }).then(console.log);`
-    - create job listing: `axios.post('/employer/:id/', { title: "Head Chef", description: "Creating new menus for each holiday feast and supervising kitchen", zipcode: "10117", category: "kitchen", jobType: "full-time", compensationMin: 12, compensationMax: 18, tips: false }).then(console.log);`
-- job search route
-    - `axios.get('/jobs/?zipcode=10117&jobType=full-time&tips=false&category=kitchen').catch(err => console.log(err));`
-    - for querying multiple zipcodes for example use a request like so: `axios.get('/jobs/?zipcode[]=10117&zipcode[]=10118&category=kitchen').catch(err => console.log(err));`
 - jobseeker starts application
     - requires a job seeker to exist first `axios.post('/job-seeker', { name: 'Dobby', email: 'Dobby@freedom.com' }).then(console.log);`
     - app gets added to jobseeker: `axios.post('/job-seeker/:id/job/:jobId/application', { yearsOfExperience: 25, languagesSpoken: "English", otherSkills: "Housekeeping", interviewAvailability: "Available any time monday-saturday between 8am and 8pm" }).then(console.log)`
