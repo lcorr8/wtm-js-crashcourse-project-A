@@ -1,5 +1,6 @@
 # Review tasks week 5
 
+
 1. :white_check_mark: you don’t need to use `Object.freeze` for your enums — not only there are certain ways to hack it, it’s generally unnecessary. you will do code reviews all the time anyway, no one should modify this.
 
 2. :white_check_mark: prefer singular for enum  names, `ApplicationStatus` instead of `ApplicationStatuses`. prefer `UPPER_CASE` instead of `PascalCase`, should be `INTERVIEW_OFFERED` instead of `InterviewOffered`.
