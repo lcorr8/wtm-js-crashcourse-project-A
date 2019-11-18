@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const ApplicationService = require('../services/application-service');
+const JobService = require('../services/job-service');
 
 router.get('/all', async (req, res) => {
   const applications = await ApplicationService.findAll().catch((err) => console.log(err));
@@ -39,6 +40,16 @@ router.put('/:id', async (req, res) => {
   res.send(application);
   console.log(application);
 });
+
+// job seeker submits an application, application gets added job's applications list and notification sent to employer
+router.post('/:id/submit', async (req, res) => {
+  const application = await ApplicationService.find(req.params.id).catch((err) => console.log(err));
+  const job = await JobService.find(application.job).catch((err) => console.log(err));
+  const updatedApplication = await ApplicationService.submitApplication(application, job);
+
+  res.send(updatedApplication);
+});
+// axios.post('/application/5dc5c64c6e56120e008f5c1c/submit').then(console.log);
 
 router.delete('/:id', async (req, res) => {
   const application = await ApplicationService.deleteOne({ _id: req.params.id }).catch((err) => console.log(err));

@@ -36,11 +36,13 @@ class ApplicationService extends BaseService {
     job.applications.push(application);
     await job.save();
 
-    await this.updateOne(application.id, { status: Enums.ApplicationStatuses.Submitted });
+    const updatedApplication = await this.updateOne(application.id, { status: Enums.ApplicationStatuses.Submitted });
     
     const employer = await EmployerService.find(job.employer);
     const message = `You have received an application for the following job post: ${job._id}`
     await NotificationService.sendNotification(employer, application, message);
+
+    return updatedApplication
   };
 }
 

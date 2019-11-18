@@ -26,7 +26,8 @@
 
 13. :white_check_mark: i’m not sure why you’re getting a max call stack size exceeded, but a way to fix it is to replace the line jobseeker.applications.push(application); with jobseeker.applications.push(application._id); in services/application-service.js — basically, instead of pushing the entire application, just push the id. works the same.
 
-14. for submitting applications in `app.post('/application/:applicationId/submit'`, I see that you’re finding the job via its _id, this should be unnecessary if you autopopulate the job field in applications. also, `ApplicationService.submitApplication` should return the updated application, so that you don’t need line 97 where you find the same application again.
+14. for submitting applications in `app.post('/application/:applicationId/submit'`, I see that you’re finding the job via its _id, this should be unnecessary if you autopopulate the job field in applications. 
+    - :white_check_mark: also, `ApplicationService.submitApplication` should return the updated application, so that you don’t need line 97 where you find the same application again.
 
 15. the following is a raw query: `await ApplicationService.updateOne(id, { status })` — routes shouldn’t use raw queries, encapsulate this functionality in the service or the model itself. you could use something like `ApplicationService.setApplicationStatus(application, status)` or  `application.setStatus(statusName)` 
 

@@ -40,18 +40,6 @@ app.use('/job-seeker', JobSeekerRoutes);
 
 // ------------------------------------Complex Interaction Endpoints -------------------------------
 
-// job seeker submits an application, application gets added job's applications list and notification sent to employer
-app.post('/application/:applicationId/submit', async (req, res) => {
-  const application = await ApplicationService.find(req.params.applicationId).catch((err) => console.log(err));
-  const job = await JobService.find(application.job._id).catch((err) => console.log(err));
-  await ApplicationService.submitApplication(application, job);
-
-  const updatedApplication = await ApplicationService.find(application._id).catch((err) => console.log(err));
-  res.send(updatedApplication);
-});
-// axios.post('/application/5dc5c64c6e56120e008f5c1c/submit').then(console.log);
-
-
 // employer offers an interview, interview added to application and application status updated
 app.post('/application/:id/interview', async (req, res) => {
   const application = await ApplicationService.find(req.params.id).catch((err) => console.log(err));
