@@ -20,11 +20,11 @@
 
 10. :white_check_mark: use kebab-case in the url, localhost:3000/jobseeker should b e `localhost:3000/job-seeker`
 
-11. you’re getting a Maximum call stack size exceeded while trying to create a job or apply to it 
+11. :white_check_mark: you’re getting a Maximum call stack size exceeded while trying to create a job or apply to it - yeah validation error that I wasn't logging...oops!
 
 12. use regular try / catch blocks for awaiting async calls, instead of .catch() function which is for promises
 
-13. i’m not sure why you’re getting a max call stack size exceeded, but a way to fix it is to replace the line jobseeker.applications.push(application); with jobseeker.applications.push(application._id); in services/application-service.js — basically, instead of pushing the entire application, just push the id. works the same.
+13. :white_check_mark: i’m not sure why you’re getting a max call stack size exceeded, but a way to fix it is to replace the line jobseeker.applications.push(application); with jobseeker.applications.push(application._id); in services/application-service.js — basically, instead of pushing the entire application, just push the id. works the same.
 
 14. for submitting applications in `app.post('/application/:applicationId/submit'`, I see that you’re finding the job via its _id, this should be unnecessary if you autopopulate the job field in applications. also, `ApplicationService.submitApplication` should return the updated application, so that you don’t need line 97 where you find the same application again.
 

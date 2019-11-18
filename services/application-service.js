@@ -3,6 +3,7 @@ const ApplicationModel = require('../models/application');
 const Enums = require('../helpers/enums');
 const EmployerService = require('../services/employer-service')
 const NotificationService = require('../services/notification-service')
+const JobSeekerService = require('../services/job-seeker-service')
 
 class ApplicationService extends BaseService {
   model = ApplicationModel;
@@ -11,17 +12,14 @@ class ApplicationService extends BaseService {
    * JobSeeker starts an application:
    * application gets saved to jobseekers applications list only,
    * no notifications sent yet
-   * @param {*} jobseeker 
-   * @param {*} job 
    * @param {*} applicationParams 
    */
-  async startApplication(jobseeker,job, applicationParams) {
-    applicationParams.job = job
-    applicationParams.jobSeeker = jobseeker
+  async startApplication(applicationParams) {
     applicationParams.status = Enums.ApplicationStatuses.Started
     const application = await this.add(applicationParams);
-
-    jobseeker.applications.push(application);
+    
+    const jobseeker = await JobSeekerService.find(application.jobSeeker._id)
+    jobseeker.applications.push(application._id);
     await jobseeker.save()
     return application
   }
