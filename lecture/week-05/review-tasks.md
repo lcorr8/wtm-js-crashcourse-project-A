@@ -4,9 +4,9 @@
 
 2. :white_check_mark: prefer singular for enum  names, `ApplicationStatus` instead of `ApplicationStatuses`. prefer `UPPER_CASE` instead of `PascalCase`, should be `INTERVIEW_OFFERED` instead of `InterviewOffered`.
 
-3. add and expose your enums in your respective models. when your code gets big, you can’t add all of your enums to a single file.
+3. TODO: add and expose your enums in your respective models. when your code gets big, you can’t add all of your enums to a single file.
 
-4. you don’t need `Object.assign` in const `interviewParams = Object.assign(scheduleOptions,{job: application.job, application: application,jobSeeker: application.jobSeeker})`. the following also works:
+4. :white_check_mark: you don’t need `Object.assign` in const `interviewParams = Object.assign(scheduleOptions,{job: application.job, application: application,jobSeeker: application.jobSeeker})`. the following also works:
 `const interviewParams = {...scheduleOptions, job: application.job, application: application,jobSeeker: application.jobSeeker}`
 
 5. :white_check_mark: in your index.js, while defining your routes, you should use root url’s — instead of app.use(EmployerRoutes);, write `app.use('/employer', EmployerRoutes);` so that you don’t have to repeat /employer in all your routes in routes/employer.js
@@ -23,11 +23,11 @@
 
 11. :white_check_mark: you’re getting a Maximum call stack size exceeded while trying to create a job or apply to it - yeah validation error that I wasn't logging...oops!
 
-12. use regular try / catch blocks for awaiting async calls, instead of .catch() function which is for promises
+12. TODO: use regular try / catch blocks for awaiting async calls, instead of .catch() function which is for promises
 
 13. :white_check_mark: i’m not sure why you’re getting a max call stack size exceeded, but a way to fix it is to replace the line jobseeker.applications.push(application); with jobseeker.applications.push(application._id); in services/application-service.js — basically, instead of pushing the entire application, just push the id. works the same.
 
-14. for submitting applications in `app.post('/application/:applicationId/submit'`, I see that you’re finding the job via its _id, this should be unnecessary if you autopopulate the job field in applications. 
+14. TODO: for submitting applications in `app.post('/application/:applicationId/submit'`, I see that you’re finding the job via its _id, this should be unnecessary if you autopopulate the job field in applications. 
     - :white_check_mark: also, `ApplicationService.submitApplication` should return the updated application, so that you don’t need line 97 where you find the same application again.
 
 15. :white_check_mark: the following is a raw query: `await ApplicationService.updateOne(id, { status })` — routes shouldn’t use raw queries, encapsulate this functionality in the service or the model itself. you could use something like `ApplicationService.setApplicationStatus(application, status)` or  `application.setStatus(statusName)` 
