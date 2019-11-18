@@ -25,7 +25,7 @@ const jobSeekerToCreate = {
 };
 
 const applicationToCreate = {
-  status: Enums.ApplicationStatuses.Started,
+  status: Enums.ApplicationStatus.STARTED,
   yearsOfExperience: 25,
   languagesSpoken: 'English',
   otherSkills: 'Housekeeping',
@@ -44,7 +44,7 @@ async function testSetUp(employerParams, jobParams, jobSeekerParams, application
     .send(jobParams)).body;
 
   const jobSeekerCreated = (await request(app)
-    .post('/jobseeker')
+    .post('/job-seeker')
     .send(jobSeekerParams)).body;
 
   applicationParams.job = jobCreated._id;
@@ -107,7 +107,7 @@ test('update an application', async t => {
   t.plan(2);
 
   const applicationUpdate = {
-    status: Enums.ApplicationStatuses.Submitted,
+    status: Enums.ApplicationStatus.SUBMITTED,
   };
 
   const applicationCreatedRes = await testSetUp(employerToCreate, jobToCreate, jobSeekerToCreate, applicationToCreate);

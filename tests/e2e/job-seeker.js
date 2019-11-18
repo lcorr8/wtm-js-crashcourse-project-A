@@ -11,7 +11,7 @@ test('create new job seeker', async t => {
   t.plan(3);
 
   const res = await request(app)
-    .post('/jobseeker')
+    .post('/job-seeker')
     .send(jobSeekerToCreate);
 
   t.is(res.status, 200);
@@ -23,11 +23,11 @@ test('Fetch a job seeker', async t => {
   t.plan(2);
 
   const jobSeekerCreated = (await request(app)
-    .post('/jobseeker')
+    .post('/job-seeker')
     .send(jobSeekerToCreate)).body;
 
   const fetchRes = await request(app)
-    .get(`/jobseeker/${jobSeekerCreated._id}/json`);
+    .get(`/job-seeker/${jobSeekerCreated._id}/json`);
 
   const jobSeekerFetched = fetchRes.body;
 
@@ -39,10 +39,10 @@ test('Fetch all job seekers', async t => {
   t.plan(3);
 
   await request(app)
-    .post('/jobseeker')
+    .post('/job-seeker')
     .send(jobSeekerToCreate);
 
-  const fetchRes = await request(app).get('/jobseeker/all/json');
+  const fetchRes = await request(app).get('/job-seeker/all/json');
 
   t.is(fetchRes.status, 200);
   t.true(Array.isArray(fetchRes.body), 'Body should be an array');
@@ -57,11 +57,11 @@ test('update a job seeker', async t => {
   };
 
   const jobSeekerCreated = (await request(app)
-    .post('/jobseeker')
+    .post('/job-seeker')
     .send(jobSeekerToCreate)).body;
 
   const updatedJobSeeker = await request(app)
-    .put(`/jobseeker/${jobSeekerCreated._id}`)
+    .put(`/job-seeker/${jobSeekerCreated._id}`)
     .send(updatedEmail);
 
   t.is(updatedJobSeeker.status, 200);
@@ -72,11 +72,11 @@ test('delete a job seeker', async t => {
   t.plan(2);
 
   const jobSeekerCreated = (await request(app)
-    .post('/jobseeker')
+    .post('/job-seeker')
     .send(jobSeekerToCreate)).body;
 
   const deletionResponse = await request(app)
-    .delete(`/jobseeker/${jobSeekerCreated._id}`);
+    .delete(`/job-seeker/${jobSeekerCreated._id}`);
 
   t.is(deletionResponse.status, 200);
   t.is(deletionResponse.text, 'job seeker deleted!');

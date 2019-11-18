@@ -16,12 +16,12 @@ const JobSchema = mongoose.Schema({
   },
   category: {
     type: String,
-    enum: Object.values(Enums.JobCategories),
+    enum: Object.values(Enums.JobCategory),
     required: true,
   },
   jobType: {
     type: String,
-    enum: Object.values(Enums.JobTypes),
+    enum: Object.values(Enums.JobType),
     required: true,
   },
   compensationMin: Number,
