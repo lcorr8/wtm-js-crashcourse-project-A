@@ -15,7 +15,7 @@ const ApplicationSchema = mongoose.Schema({
   },
   status: {
     type: String,
-    enum: Object.values(Enums.ApplicationStatuses),
+    enum: Object.values(Enums.ApplicationStatus),
     required: true,
   },
   yearsOfExperience: {

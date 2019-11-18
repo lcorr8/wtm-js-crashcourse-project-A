@@ -16,7 +16,7 @@ class ApplicationService extends BaseService {
    * @param {*} applicationParams 
    */
   async startApplication(applicationParams) {
-    applicationParams.status = Enums.ApplicationStatuses.Started
+    applicationParams.status = Enums.ApplicationStatus.STARTED
     const application = await this.add(applicationParams);
     
     const jobseeker = await JobSeekerService.find(application.jobSeeker._id)
@@ -37,7 +37,7 @@ class ApplicationService extends BaseService {
     job.applications.push(application);
     await job.save();
 
-    const updatedApplication = await this.updateOne(application.id, { status: Enums.ApplicationStatuses.Submitted });
+    const updatedApplication = await this.updateOne(application.id, { status: Enums.ApplicationStatus.SUBMITTED });
     
     const employer = await EmployerService.find(job.employer);
     const message = `You have received an application for the following job post: ${job._id}`
@@ -60,7 +60,7 @@ class ApplicationService extends BaseService {
     
     const updatedApplication = await this.updateOne(application._id, {
       interview: interview, 
-      status: Enums.ApplicationStatuses.InterviewOffered
+      status: Enums.ApplicationStatus.INTERVIEW_OFFERED
     });
 
     const jobSeeker = await JobSeekerService.find(application.jobSeeker);
@@ -75,19 +75,19 @@ class ApplicationService extends BaseService {
     console.log('application param: ', application);
     console.log('status param: ', status);
 
-    if (status === Enums.ApplicationStatuses.Accepted) {
-      const updatedApplication = await this.updateOne(application, { status: Enums.ApplicationStatuses.Accepted }).catch((err) => console.log(err));
+    if (status === Enums.ApplicationStatus.ACCEPTED) {
+      const updatedApplication = await this.updateOne(application, { status: Enums.ApplicationStatus.ACCEPTED }).catch((err) => console.log(err));
       const jobseeker = await JobSeekerService.find(updatedApplication.jobSeeker).catch((err) => console.log(err));
       const message = `Congratulations on your new Job! your application for the following job post: ${updatedApplication.job} has been accepted!`;
       await NotificationService.sendNotification(jobseeker, updatedApplication, message).catch((err) => console.log(err));
       
       return updatedApplication
 
-    } else if (status === Enums.ApplicationStatuses.Pending) {
-      const updatedApplication = await this.updateOne(application, { status: Enums.ApplicationStatuses.Pending }).catch((err) => console.log(err));
+    } else if (status === Enums.ApplicationStatus.PENDING) {
+      const updatedApplication = await this.updateOne(application, { status: Enums.ApplicationStatus.PENDING }).catch((err) => console.log(err));
       return updatedApplication
-    } else if (status === Enums.ApplicationStatuses.Declined) {
-      const updatedApplication = await this.updateOne(application, { status: Enums.ApplicationStatuses.Declined }).catch((err) => console.log(err));
+    } else if (status === Enums.ApplicationStatus.DECLINED) {
+      const updatedApplication = await this.updateOne(application, { status: Enums.ApplicationStatus.DECLINED }).catch((err) => console.log(err));
       return updatedApplication
     } else {
       throw "Employer provided status is invalid";

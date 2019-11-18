@@ -1,28 +1,29 @@
-const ApplicationStatuses = Object.freeze({
-  Started: 'started',
-  Submitted: 'submitted',
-  InterviewOffered: 'interviewOffered',
-  InterviewAccepted: 'interviewAccepted',
-  Accepted: 'accepted',
-  Pending: 'pending',
-  Declined: 'declined',
-});
+const ApplicationStatus = {
+  STARTED: 'started',
+  SUBMITTED: 'submitted',
+  INTERVIEW_OFFERED: 'interviewOffered',
+  INTERVIEW_ACCEPTED: 'interviewAccepted',
+  ACCEPTED: 'accepted',
+  PENDING: 'pending',
+  DECLINED: 'declined',
+};
 
-const JobCategories = Object.freeze({
-  Bar: 'bar',
-  Floor: 'floor',
-  Kitchen: 'kitchen',
-  Management: 'management',
-  Office: 'office',
-  Other: 'other',
-});
+const JobCategory = {
+  BAR: 'bar',
+  FLOOR: 'floor',
+  KITCHEN: 'kitchen',
+  MANAGEMENT: 'management',
+  OFFICE: 'office',
+  OTHER: 'other',
+};
 
-const JobTypes = Object.freeze({
-  FullTime: 'full-time',
-  PArtTime: 'part-time',
-  Internship: 'internship',
-  TempOrSeasonal: 'temporary/seasonal',
-  Freelance: 'freelance',
-});
+const JobType = {
+  FULL_TIME: 'full-time',
+  PART_TIME: 'part-time',
+  INTERNSHIP: 'internship',
+  TEMP_OR_SEASONAL: 'temporary/seasonal',
+  FREELANCE: 'freelance',
+  OTHER: 'other',
+};
 
-module.exports = { ApplicationStatuses, JobCategories, JobTypes };
+module.exports = { ApplicationStatus, JobCategory, JobType };

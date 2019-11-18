@@ -20,7 +20,7 @@ router.get('/:id', async (req, res) => {
 router.get('/:id/slot/:number', async (req, res) => {
   const interview = await InterviewService.find(req.params.id).catch((err) => console.log(err));
   const updatedInterview = await InterviewService.acceptAndFinalizeTime(interview, req.params.number);
-  const updatedApplication = await ApplicationService.updateOne(interview.application, { status: Enums.ApplicationStatuses.InterviewAccepted }).catch((err) => console.log(err));
+  const updatedApplication = await ApplicationService.updateOne(interview.application, { status: Enums.ApplicationStatus.INTERVIEW_ACCEPTED }).catch((err) => console.log(err));
   console.log('updated application: ', updatedApplication);
   res.send(updatedInterview);
 });
