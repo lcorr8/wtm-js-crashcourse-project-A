@@ -3,7 +3,7 @@
 - try to get 100% line coverage...currently about 80%
     - CRUD interview
     - complex routes
-    - brownie points: refactor application, interview and notification to use actual instances instead of ids
+    - brownie points: refactor application, interview and notification tests to use actual instances instead of ids, after auto populate refactoring.
 
 ## Leftover tasks to improve app:
 
@@ -13,6 +13,6 @@
     - add resume to application (add new or select existing) service and route
     - find an upload picture library for mobile
 3. refactor: use library to auto populate `$ npm i mongoose-autopopulate`, cap it at 1-2 levels
-4. implement creation date on models, to be able to sort by desc/asc order when searching for jobs.
+4. implement creation date on models, to be able to sort by desc/asc order when searching for jobs. [mongoose -  Query.prototype.sort()](https://mongoosejs.com/docs/api.html#query_Query-sort)
 
 ## Tasks from Testing Lecture:
