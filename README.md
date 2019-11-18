@@ -45,9 +45,10 @@ Below please find the classes with the plain CRUD routes for each model. Go to s
 - application
     - all [localhost:3000/application/all](http://localhost:3000/application/all)
     - by id, where `:id` should be replaced by actual id [localhost:3000/application/:id](http://localhost:3000/application/all)
-    - creates application, application gets added to job seeker
+    - create application, application gets added to job seeker
         - requires a job seeker and job to exist first, so ids can be in the request
         - `axios.post('/application', { yearsOfExperience: 25, languagesSpoken: "English", otherSkills: "Housekeeping", interviewAvailability: "Available any time monday-saturday between 8am and 8pm", jobSeeker: "5dc5a77097fdf806d7a70d08", job: "5dc5c28e4608550d4ebdad4e" }).then(console.log)`
+    - submit application, job seeker submits an application to a given job, application gets added to job applications list, notification is sent to employer: `axios.post('/application/:id/submit').then(console.log);`
          
 - notification
     - all [localhost:3000/notification/all](http://localhost:3000/notification/all)
@@ -98,11 +99,6 @@ Application utilizes axios. Sample requests can also be found in index.js below 
 
 NOTE: please ensure you have created a few db entries if you are for example querying for a job with a given zipcode.
 
-
-- job seeker submits an application to a given job
-    - application gets added to job applications list
-    - notification is sent to employer
-    - `axios.post('/application/:id/submit').then(console.log);`
 - employer offers an interview:
     - create interview
     - add interview to application, update status
