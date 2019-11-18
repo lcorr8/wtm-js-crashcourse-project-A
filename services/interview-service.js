@@ -1,11 +1,8 @@
 const BaseService = require('./base-service');
 const InterviewModel = require('../models/interview');
-const ApplicationService = require('./application-service');
-const JobSeekerService = require('./job-seeker-service');
 const NotificationService = require('./notification-service');
 const EmployerService = require('./employer-service');
 const JobService = require('./job-service');
-const Enums = require('../helpers/enums');
 
 class InterviewService extends BaseService {
   model = InterviewModel
@@ -25,7 +22,7 @@ class InterviewService extends BaseService {
     const employer = await EmployerService.find(job.employer);
     const message = `An interview for the following job post: ${job._id} has been accepted. appointment time: ${finalInterviewTime}`
     await NotificationService.sendNotification(employer, interview.application, message);
-
+    
     return updatedInterview
   }
 }

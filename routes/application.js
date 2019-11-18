@@ -36,7 +36,7 @@ router.post('/', async (req, res) => {
 // }).then(console.log)
 
 router.put('/:id', async (req, res) => {
-  const application = await ApplicationService.updateOne({ _id: req.params.id }, req.body).catch((err) => console.log(err));
+  const application = await ApplicationService.updateOne(req.params.id, req.body).catch((err) => console.log(err));
   res.send(application);
   console.log(application);
 });

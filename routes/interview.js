@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const InterviewService = require('../services/interview-service');
 const ApplicationService = require('../services/application-service');
+const Enums = require('../helpers/enums');
 
 router.get('/all', async (req, res) => {
   const interviews = await InterviewService.findAll().catch((err) => console.log(err));
@@ -14,6 +15,16 @@ router.get('/:id', async (req, res) => {
   // res.send(interview)
   res.render('interview', { interview });
 });
+
+// job seeker accepts interview by selecting a final interview slot, application status is updated, and notification is sent to employer
+router.get('/:id/slot/:number', async (req, res) => {
+  const interview = await InterviewService.find(req.params.id).catch((err) => console.log(err));
+  const updatedInterview = await InterviewService.acceptAndFinalizeTime(interview, req.params.number);
+  const updatedApplication = await ApplicationService.updateOne(interview.application, { status: Enums.ApplicationStatuses.InterviewAccepted }).catch((err) => console.log(err));
+  console.log('updated application: ', updatedApplication);
+  res.send(updatedInterview);
+});
+// axios.get('/interview/5dc5fe1bb86c5716604c0a46/slot/1').then(console.log);
 
 // employer offers an interview, interview added to application and application status updated
 router.post('/', async (req, res) => {

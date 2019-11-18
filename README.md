@@ -34,8 +34,8 @@ Below please find the classes with the plain CRUD routes for each model. Go to s
 - interview
     - all [localhost:3000/interview/all](http://localhost:3000/interview/all)
     - by id, where `:id` should be replaced by actual id [localhost:3000/interview/:id](http://localhost:3000/interview/all)
-    - create interview, employer creates an interview, interview is added to application, application status is updated, notification is sent to jobseeker
-    - `axios.post('/interview', { application: "5dc5eb18ef8725127c365f4a", scheduleOptions: [new Date("december 3, 2019 11:30"), new Date("december 4, 2019 15:30"), new Date("december 5, 2019 17:30")] }).then(console.log);`
+    - create interview, employer creates an interview, interview is added to application, application status is updated, notification is sent to jobseeker: `axios.post('/interview', { application: "5dc5eb18ef8725127c365f4a", scheduleOptions: [new Date("december 3, 2019 11:30"), new Date("december 4, 2019 15:30"), new Date("december 5, 2019 17:30")] }).then(console.log);`
+    - job seeker accepts interview, notification is sent to employer, application status is updated: `axios.get('/interview/:id/slot/1').then(console.log);`
 - job seeker
     - all [localhost:3000/job-seeker/all](http://localhost:3000/job-seeker/all)
         - `axios.get('/job-seeker/all').then(console.log);`
@@ -101,10 +101,6 @@ Application utilizes axios. Sample requests can also be found in index.js below 
 
 NOTE: please ensure you have created a few db entries if you are for example querying for a job with a given zipcode.
 
-- job seeker accepts interview
-    - notification is sent to employer
-    - application status is updated
-    - `axios.post('/interview/:id/slot/1').then(console.log);`
 - employer updates application status after interview
     - if accepted: notifications sent to applicant
     - `axios.post('/application/:id/status', {status: 'declined'}).then(console.log);`

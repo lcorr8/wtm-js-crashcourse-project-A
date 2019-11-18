@@ -40,16 +40,6 @@ app.use('/job-seeker', JobSeekerRoutes);
 
 // ------------------------------------Complex Interaction Endpoints -------------------------------
 
-// job seeker accepts interview by selecting a final interview slot, application status is updated, and notification is sent to employer
-app.post('/interview/:id/slot/:number', async (req, res) => {
-  const interview = await InterviewService.find(req.params.id).catch((err) => console.log(err));
-  const updatedInterview = await InterviewService.acceptAndFinalizeTime(interview, req.params.number);
-  const updatedApplication = await ApplicationService.updateOne(interview.application, { status: Enums.ApplicationStatuses.InterviewAccepted });
-  console.log(updatedApplication);
-  res.send(updatedInterview);
-});
-// axios.post('/interview/5dc5fe1bb86c5716604c0a46/slot/1').then(console.log);
-
 // employer updates application status, notifications sent to applicant if accepted
 app.post('/application/:id/status', async (req, res) => {
   const { id } = req.params;
