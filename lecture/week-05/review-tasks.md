@@ -41,11 +41,12 @@ sample try/catch block:
 router.post('/', async (req, res) => {
     try {
         const newEvent = await EventService.add(req.body)
-        res.status(418).send(newEvent)
-    } catch {
-        res.status(500).send('Something died! :(')
-    }
-})
+        res.res.render(user);
+    } catch (err) {
+    console.error(err.message);
+    res.status(500).send(`Server error: ${err.message}`);
+  }
+});
 ```
 
 
