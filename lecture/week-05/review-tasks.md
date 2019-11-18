@@ -10,7 +10,7 @@
 
 5. :white_check_mark: in your index.js, while defining your routes, you should use root url’s — instead of app.use(EmployerRoutes);, write `app.use('/employer', EmployerRoutes);` so that you don’t have to repeat /employer in all your routes in routes/employer.js
 
-6. the complex endpoints should also be in your routes file.
+6. :white_check_mark: the complex endpoints should also be in your routes file.
 
 7. :white_check_mark: `.post('/employer/:id` shouldn’t create a job listing — the url, in  the worst case, should look like `.post('/employer/:id/jobs`, however you already have a router for jobs — and you already have a `.post('/job'` there — i think the first one is redundant.
 
@@ -29,7 +29,7 @@
 14. for submitting applications in `app.post('/application/:applicationId/submit'`, I see that you’re finding the job via its _id, this should be unnecessary if you autopopulate the job field in applications. 
     - :white_check_mark: also, `ApplicationService.submitApplication` should return the updated application, so that you don’t need line 97 where you find the same application again.
 
-15. the following is a raw query: `await ApplicationService.updateOne(id, { status })` — routes shouldn’t use raw queries, encapsulate this functionality in the service or the model itself. you could use something like `ApplicationService.setApplicationStatus(application, status)` or  `application.setStatus(statusName)` 
+15. :white_check_mark: the following is a raw query: `await ApplicationService.updateOne(id, { status })` — routes shouldn’t use raw queries, encapsulate this functionality in the service or the model itself. you could use something like `ApplicationService.setApplicationStatus(application, status)` or  `application.setStatus(statusName)` 
 
 16. :white_check_mark: instead of using `InterviewService.addToApplication` you could prefer `ApplicationService.addInterview` or better yet application.addInterview
 

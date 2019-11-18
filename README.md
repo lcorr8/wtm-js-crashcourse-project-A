@@ -1,8 +1,7 @@
-# WTM-js-crashcourse-project-A
+# WTM-js-crashcourse-project-A: Job application service
 project created during the [WTM JS Crash Course](https://github.com/WTMBerlin/jscc2019). Currently under development.
-## Job application service
 
-### Start application
+## Start application
 `$ npm install`
 
 `$ nodemon index.js`
@@ -11,9 +10,12 @@ make sure mongo is running `$ mongod`
 
 open [localhost:3000](http://localhost:3000/)
 
+## Classes & Routes
+Below please find the classes and api routes for each model.
+Application utilizes axios. Sample requests can also be found in index.js below the given routes. To run the interactions you can copy paste the axios requests in your browser's console. 
 
-### Classes
-Below please find the classes with the plain CRUD routes for each model. Go to section [Complex interactions from week 5](#Complex-interactions-from-week-5) to see complex interactions axios post requests.
+NOTE: please ensure you have created a few db entries if you are for example querying for a job with a given zipcode.
+
 - employer
     - all [localhost:3000/employer/all](http://localhost:3000/employer/all)
         - `axios.get('/employer/all').then(console.log);`
@@ -51,6 +53,10 @@ Below please find the classes with the plain CRUD routes for each model. Go to s
         - requires a job seeker and job to exist first, so ids can be in the request
         - `axios.post('/application', { yearsOfExperience: 25, languagesSpoken: "English", otherSkills: "Housekeeping", interviewAvailability: "Available any time monday-saturday between 8am and 8pm", jobSeeker: "5dc5a77097fdf806d7a70d08", job: "5dc5c28e4608550d4ebdad4e" }).then(console.log)`
     - submit application, job seeker submits an application to a given job, application gets added to job applications list, notification is sent to employer: `axios.post('/application/:id/submit').then(console.log);`
+    - employer updates application status after interview, if accepted: notifications sent to applicant
+        - `axios.post('/application/:id/status', {status: 'declined'}).then(console.log);`
+        - `axios.post('/application/:id/status', {status: 'pending'}).then(console.log);`
+        - `axios.post('/application/:id/status', {status: 'accepted'}).then(console.log);`
          
 - notification
     - all [localhost:3000/notification/all](http://localhost:3000/notification/all)
@@ -94,18 +100,6 @@ Minimum expected interactions to be built into the job application service:
 #### Notification
 - has a message, a time stamp, and the related application
 - can be sent to an inbox (job seeker, employer)
-
-
-# Complex interactions from week 5
-Application utilizes axios. Sample requests can also be found in index.js below the given routes. To run the interactions you can copy paste the axios requests in your browser's console. 
-
-NOTE: please ensure you have created a few db entries if you are for example querying for a job with a given zipcode.
-
-- employer updates application status after interview
-    - if accepted: notifications sent to applicant
-    - `axios.post('/application/:id/status', {status: 'declined'}).then(console.log);`
-    - `axios.post('/application/:id/status', {status: 'pending'}).then(console.log);`
-    - `axios.post('/application/:id/status', {status: 'accepted'}).then(console.log);`
 
  ### pending complex routes to add
  - TODO: user management

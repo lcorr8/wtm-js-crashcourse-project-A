@@ -41,6 +41,19 @@ router.put('/:id', async (req, res) => {
   console.log(application);
 });
 
+// employer updates application status, notifications sent to applicant if accepted
+router.post('/:id/status', async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  const updatedApplication = await ApplicationService.setApplicationStatus(id, status).catch((err) => console.log(err));
+  console.log('updated application: ', updatedApplication);
+  res.send(updatedApplication);
+});
+// axios.post('/application/:id/status', {status: 'declined'}).then(console.log);
+// axios.post('/application/:id/status', {status: 'pending'}).then(console.log);
+// axios.post('/application/:id/status', {status: 'accepted'}).then(console.log);
+
 // job seeker submits an application, application gets added job's applications list and notification sent to employer
 router.post('/:id/submit', async (req, res) => {
   const application = await ApplicationService.find(req.params.id).catch((err) => console.log(err));

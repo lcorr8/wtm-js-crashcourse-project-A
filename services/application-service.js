@@ -70,6 +70,30 @@ class ApplicationService extends BaseService {
     console.log('updated application: ', updatedApplication)
     return interview
   }
+
+  async setApplicationStatus(application, status){
+    console.log('application param: ', application);
+    console.log('status param: ', status);
+
+    if (status === Enums.ApplicationStatuses.Accepted) {
+      const updatedApplication = await this.updateOne(application, { status: Enums.ApplicationStatuses.Accepted }).catch((err) => console.log(err));
+      const jobseeker = await JobSeekerService.find(updatedApplication.jobSeeker).catch((err) => console.log(err));
+      const message = `Congratulations on your new Job! your application for the following job post: ${updatedApplication.job} has been accepted!`;
+      await NotificationService.sendNotification(jobseeker, updatedApplication, message).catch((err) => console.log(err));
+      
+      return updatedApplication
+
+    } else if (status === Enums.ApplicationStatuses.Pending) {
+      const updatedApplication = await this.updateOne(application, { status: Enums.ApplicationStatuses.Pending }).catch((err) => console.log(err));
+      return updatedApplication
+    } else if (status === Enums.ApplicationStatuses.Declined) {
+      const updatedApplication = await this.updateOne(application, { status: Enums.ApplicationStatuses.Declined }).catch((err) => console.log(err));
+      return updatedApplication
+    } else {
+      throw "Employer provided status is invalid";
+    }
+  }
+  
 }
 
 module.exports = new ApplicationService();
