@@ -113,34 +113,66 @@ test('create new interview', async t => {
   t.deepEqual(Date.parse(interviewCreated.scheduleOptions[2]), Date.parse(generatedScheduleOptions[2]));
 });
 
-test.skip('Fetch an application', async t => {
-  t.plan(2);
+test('Fetch an interview by id', async t => {
+  t.plan(4);
 
   const applicationCreatedRes = await testSetUp(employerToCreate, jobToCreate, jobSeekerToCreate, applicationToCreate);
   const applicationCreated = applicationCreatedRes.body;
+  t.is(applicationCreatedRes.status, 200, 'application should be created successfully.');
+  const generatedScheduleOptions = await generateScheduleOptions();
+
+  const interviewParams = {
+    job: applicationCreated.job,
+    application: applicationCreated._id,
+    jobSeeker: applicationCreated.jobSeeker,
+    scheduleOptions: generatedScheduleOptions,
+  };
+
+  const interviewCreatedRes = await request(app)
+    .post('/interview/')
+    .send(interviewParams).catch((err) => console.log(err));
+
+  const interviewCreated = interviewCreatedRes.body;
+  t.is(interviewCreatedRes.status, 200, 'interview should be created successfully.');
 
   const fetchRes = await request(app)
-    .get(`/application/${applicationCreated._id}/json`);
+    .get(`/interview/${interviewCreated._id}/json`);
+  const interviewFetched = fetchRes.body;
 
-  const applicationFetched = fetchRes.body;
-
-  t.is(fetchRes.status, 200);
-  t.deepEqual(applicationFetched, applicationCreated, 'fetched app matches created app');
+  t.is(fetchRes.status, 200, 'Interview should be fetched successfully.');
+  t.deepEqual(interviewFetched, interviewCreated, 'fetched interview should match created interview');
 });
 
-test.skip('Fetch all applications', async t => {
-  t.plan(3);
+test('Fetch all interviews', async t => {
+  t.plan(5);
 
-  await testSetUp(employerToCreate, jobToCreate, jobSeekerToCreate, applicationToCreate);
+  const applicationCreatedRes = await testSetUp(employerToCreate, jobToCreate, jobSeekerToCreate, applicationToCreate);
+  const applicationCreated = applicationCreatedRes.body;
+  t.is(applicationCreatedRes.status, 200, 'application should be created successfully.');
+  const generatedScheduleOptions = await generateScheduleOptions();
 
-  const fetchRes = await request(app).get('/application/all/json');
+  const interviewParams = {
+    job: applicationCreated.job,
+    application: applicationCreated._id,
+    jobSeeker: applicationCreated.jobSeeker,
+    scheduleOptions: generatedScheduleOptions,
+  };
 
-  t.is(fetchRes.status, 200);
+  const interviewCreatedRes = await request(app)
+    .post('/interview/')
+    .send(interviewParams).catch((err) => console.log(err));
+
+  t.is(interviewCreatedRes.status, 200, 'interview should be created successfully.');
+
+
+  const fetchRes = await request(app).get('/interview/all/json');
+
+  t.is(fetchRes.status, 200, 'Interviews should be fetched successfully.');
   t.true(Array.isArray(fetchRes.body), 'Body should be an array');
-  t.true(fetchRes.body.length > 0);
+  t.true(fetchRes.body.length > 0, 'Interviews array should contain one or more interviews');
 });
 
-test.skip('update an application', async t => {
+test.skip('update an interview', async t => {
   t.plan(2);
 
   const applicationUpdate = {
