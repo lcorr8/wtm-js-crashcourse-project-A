@@ -47,7 +47,7 @@ router.put('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
   const interview = await InterviewService.deleteOne({ _id: req.params.id }).catch((err) => console.log(err));
-  res.send(interview);
+  res.send('interview deleted!');
 });
 
 module.exports = router;
