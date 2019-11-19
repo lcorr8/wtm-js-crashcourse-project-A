@@ -6,14 +6,20 @@ const Enums = require('../helpers/enums');
 
 router.get('/all', async (req, res) => {
   const interviews = await InterviewService.findAll().catch((err) => console.log(err));
-  // res.send(interviews);
   res.render('interviews', { interviews });
+});
+router.get('/all/json', async (req, res) => {
+  const interviews = await InterviewService.findAll().catch((err) => console.log(err));
+  res.send(interviews);
 });
 
 router.get('/:id', async (req, res) => {
   const interview = await InterviewService.find({ _id: req.params.id }).catch((err) => console.log(err));
-  // res.send(interview)
   res.render('interview', { interview });
+});
+router.get('/:id/json', async (req, res) => {
+  const interview = await InterviewService.find({ _id: req.params.id }).catch((err) => console.log(err));
+  res.send(interview);
 });
 
 // job seeker accepts interview by selecting a final interview slot, application status is updated, and notification is sent to employer
@@ -41,7 +47,7 @@ router.put('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
   const interview = await InterviewService.deleteOne({ _id: req.params.id }).catch((err) => console.log(err));
-  res.send(interview);
+  res.send('interview deleted!');
 });
 
 module.exports = router;

@@ -55,10 +55,9 @@ class ApplicationService extends BaseService {
    */
   async addInterview(params){
     const application = await this.find(params.application).catch((err) => console.log(err));
-    const interviewParams = { ...params, job: application.job, jobSeeker: application.jobSeeker};
-    const interview = await InterviewService.add(interviewParams);
-    
-    const updatedApplication = await this.updateOne(application._id, {
+    // const interviewParams = { ...params, job: application.job, jobSeeker: application.jobSeeker};
+    const interview = await InterviewService.add(params).catch((err) => console.log(err));
+    await this.updateOne(application._id, {
       interview: interview, 
       status: Enums.ApplicationStatus.INTERVIEW_OFFERED
     });
@@ -67,7 +66,6 @@ class ApplicationService extends BaseService {
     const message = `You have received an interview for the following job post: ${application.job}`
     await NotificationService.sendNotification(jobSeeker, application, message);
 
-    console.log('updated application: ', updatedApplication)
     return interview
   }
 
