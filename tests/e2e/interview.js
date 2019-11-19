@@ -60,8 +60,8 @@ async function testSetUp(employerParams, jobParams, jobSeekerParams, application
   return applicationCreated;
 }
 
-async function generateScheduleOptions() {
-  const dayINeed = 2; // for Tuesday
+async function generateScheduleOptions(day = 2) {
+  const dayINeed = day; // for Tuesday
   const today = moment().isoWeekday();
 
   const upcomingTuesday = today <= dayINeed ? moment().isoWeekday(dayINeed) : moment().add(1, 'weeks').isoWeekday(dayINeed);
@@ -172,33 +172,122 @@ test('Fetch all interviews', async t => {
   t.true(fetchRes.body.length > 0, 'Interviews array should contain one or more interviews');
 });
 
-test.skip('update an interview', async t => {
-  t.plan(2);
+test('update an interview (general update of schedule options)', async t => {
+  t.plan(11);
 
-  const applicationUpdate = {
-    status: Enums.ApplicationStatus.SUBMITTED,
+  const applicationCreatedRes = await testSetUp(employerToCreate, jobToCreate, jobSeekerToCreate, applicationToCreate);
+  const applicationCreated = applicationCreatedRes.body;
+  t.is(applicationCreatedRes.status, 200, 'application should be created successfully.');
+
+  const generatedScheduleOptions = await generateScheduleOptions();
+
+  const interviewParams = {
+    job: applicationCreated.job,
+    application: applicationCreated._id,
+    jobSeeker: applicationCreated.jobSeeker,
+    scheduleOptions: generatedScheduleOptions,
   };
 
-  const applicationCreatedRes = await testSetUp(employerToCreate, jobToCreate, jobSeekerToCreate, applicationToCreate);
-  const applicationCreated = applicationCreatedRes.body;
+  const interviewCreatedRes = await request(app)
+    .post('/interview/')
+    .send(interviewParams).catch((err) => console.log(err));
 
-  const updatedApplication = await request(app)
-    .put(`/application/${applicationCreated._id}`)
-    .send(applicationUpdate);
+  const interviewCreated = interviewCreatedRes.body;
+  t.is(interviewCreatedRes.status, 200, 'interview should be created successfully.');
 
-  t.is(updatedApplication.status, 200);
-  t.deepEqual(updatedApplication.body.status, applicationUpdate.status);
+  // --------------------------------
+  const updatedScheduleOptions = await generateScheduleOptions(4);
+  const interviewUpdate = {
+    scheduleOptions: updatedScheduleOptions,
+  };
+
+  const updatedInterviewRes = await request(app)
+    .put(`/interview/${interviewCreated._id}`)
+    .send(interviewUpdate);
+  const updatedInterview = updatedInterviewRes.body;
+
+  t.is(updatedInterviewRes.status, 200, 'interview should be updated successfully.');
+  t.is(updatedInterview.job, interviewParams.job);
+  t.is(updatedInterview.application, interviewParams.application);
+  t.is(updatedInterview.jobSeeker, interviewParams.jobSeeker);
+  t.true(Array.isArray(updatedInterview.scheduleOptions), 'Scheduled options should be an array.');
+  t.true(updatedInterview.scheduleOptions.length > 2, 'Scheduled options should have at least 3 options.');
+  t.deepEqual(Date.parse(updatedInterview.scheduleOptions[0]), Date.parse(updatedScheduleOptions[0]));
+  t.deepEqual(Date.parse(updatedInterview.scheduleOptions[1]), Date.parse(updatedScheduleOptions[1]));
+  t.deepEqual(Date.parse(updatedInterview.scheduleOptions[2]), Date.parse(updatedScheduleOptions[2]));
 });
 
-test.skip('delete an application', async t => {
-  t.plan(2);
+test('update interview: Job seeker accpets/finalizes interview', async t => {
+  t.plan(12);
 
   const applicationCreatedRes = await testSetUp(employerToCreate, jobToCreate, jobSeekerToCreate, applicationToCreate);
   const applicationCreated = applicationCreatedRes.body;
+  t.is(applicationCreatedRes.status, 200, 'application should be created successfully.');
+
+  const generatedScheduleOptions = await generateScheduleOptions();
+
+  const interviewParams = {
+    job: applicationCreated.job,
+    application: applicationCreated._id,
+    jobSeeker: applicationCreated.jobSeeker,
+    scheduleOptions: generatedScheduleOptions,
+  };
+
+  const interviewCreatedRes = await request(app)
+    .post('/interview/')
+    .send(interviewParams).catch((err) => console.log(err));
+
+  const interviewCreated = interviewCreatedRes.body;
+  t.is(interviewCreatedRes.status, 200, 'interview should be created successfully.');
+
+  // --------------------------------
+  const updatedInterviewRes = await request(app)
+    .get(`/interview/${interviewCreated._id}/slot/1`);
+  const updatedInterview = updatedInterviewRes.body;
+
+  t.is(updatedInterviewRes.status, 200, 'interview should be updated successfully.');
+  // params that should still be the same:
+  t.is(updatedInterview.job, interviewParams.job);
+  t.is(updatedInterview.application, interviewParams.application);
+  t.is(updatedInterview.jobSeeker, interviewParams.jobSeeker);
+  t.true(Array.isArray(updatedInterview.scheduleOptions), 'Scheduled options should be an array.');
+  t.true(updatedInterview.scheduleOptions.length > 2, 'Scheduled options should have at least 3 options.');
+  t.deepEqual(Date.parse(updatedInterview.scheduleOptions[0]), Date.parse(generatedScheduleOptions[0]));
+  t.deepEqual(Date.parse(updatedInterview.scheduleOptions[1]), Date.parse(generatedScheduleOptions[1]));
+  t.deepEqual(Date.parse(updatedInterview.scheduleOptions[2]), Date.parse(generatedScheduleOptions[2]));
+  // params that should be new:
+  t.deepEqual(Date.parse(updatedInterview.finalInterviewSlot), Date.parse(updatedInterview.scheduleOptions[0]));
+
+});
+
+test('delete an interview', async t => {
+  t.plan(4);
+
+  const applicationCreatedRes = await testSetUp(employerToCreate, jobToCreate, jobSeekerToCreate, applicationToCreate);
+  const applicationCreated = applicationCreatedRes.body;
+  t.is(applicationCreatedRes.status, 200, 'application should be created successfully.');
+
+  const generatedScheduleOptions = await generateScheduleOptions();
+
+  const interviewParams = {
+    job: applicationCreated.job,
+    application: applicationCreated._id,
+    jobSeeker: applicationCreated.jobSeeker,
+    scheduleOptions: generatedScheduleOptions,
+  };
+
+  const interviewCreatedRes = await request(app)
+    .post('/interview/')
+    .send(interviewParams).catch((err) => console.log(err));
+
+  const interviewCreated = interviewCreatedRes.body;
+  t.is(interviewCreatedRes.status, 200, 'interview should be created successfully.');
+
+  // --------------------------------
 
   const deletionResponse = await request(app)
-    .delete(`/application/${applicationCreated._id}`);
+    .delete(`/interview/${interviewCreated._id}`);
 
-  t.is(deletionResponse.status, 200);
-  t.is(deletionResponse.text, 'application deleted!');
+  t.is(deletionResponse.status, 200, 'Interview should be deleted successfully.');
+  t.is(deletionResponse.text, 'interview deleted!');
 });
