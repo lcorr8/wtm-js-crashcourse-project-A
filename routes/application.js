@@ -14,10 +14,12 @@ router.get('/all/json', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
   const application = await ApplicationService.find({ _id: req.params.id }).catch((err) => console.log(err));
+  if (!application) res.status(404);
   res.render('application', { application });
 });
 router.get('/:id/json', async (req, res) => {
   const application = await ApplicationService.find({ _id: req.params.id }).catch((err) => console.log(err));
+  if (!application) res.status(404);
   res.send(application);
 });
 
@@ -66,6 +68,7 @@ router.post('/:id/submit', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
   const application = await ApplicationService.deleteOne({ _id: req.params.id }).catch((err) => console.log(err));
+  // if (!application) res.send(404)
   res.send('application deleted!');
 });
 
