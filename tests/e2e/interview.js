@@ -60,77 +60,57 @@ async function testSetUp(employerParams, jobParams, jobSeekerParams, application
   return applicationCreated;
 }
 
-async function generateScheduleOptions(){
-    const dayINeed = 2; // for Tuesday
-    const today = moment().isoWeekday();
-    console.log('today: ', today);
+async function generateScheduleOptions() {
+  const dayINeed = 2; // for Tuesday
+  const today = moment().isoWeekday();
 
-    
-    if (today <= dayINeed) {
-        // then just give me this week's instance of that day
-        console.log('this weeks instance of tuesday', moment().isoWeekday(dayINeed).hour(11).minute(30).format('MMMM Do YYYY, h:mm a'));
-        const upcomingTuesday =  moment().isoWeekday(dayINeed).hour(11).minute(30);
-        const upcomingWednesday = upcomingTuesday.add(1, 'days');
-        console.log('upcoming wed: ', upcomingWednesday.format('MMMM Do YYYY, h:mm a'));
-        const upcomingThursday = upcomingWednesday.add(1, 'days');
-        console.log('upcoming thursd: ', upcomingThursday.format('MMMM Do YYYY, h:mm a'));
+  const upcomingTuesday = today <= dayINeed ? moment().isoWeekday(dayINeed) : moment().add(1, 'weeks').isoWeekday(dayINeed);
+  upcomingTuesday.hour(11).minute(30).seconds(0).millisecond(0).utc();
 
-        const scheduleOptions = [upcomingTuesday.toDate(), upcomingWednesday.toDate(), upcomingThursday.toDate()];
-        return scheduleOptions;
+  const upcomingWednesday = upcomingTuesday.add(1, 'days');
+  const upcomingThursday = upcomingWednesday.add(1, 'days');
+  //   console.log('upcoming thursd: ', upcomingThursday.format('MMMM Do YYYY, h:mm a'));
 
-    } else {
-        // otherwise, give me *next week's* instance of that same day
-        console.log('next weeks instance of thrusday', moment().add(1, 'weeks').isoWeekday(dayINeed).hour(11).minute(30).format('MMMM Do YYYY, h:mm a'));
-        const upcomingTuesday = moment().add(1, 'weeks').isoWeekday(dayINeed).hour(11).minute(30);
-        const upcomingWednesday = upcomingTuesday.add(1, 'days');
-        console.log('upcoming wed: ', upcomingWednesday.format('MMMM Do YYYY, h:mm a'));
-        const upcomingThursday = upcomingWednesday.add(1, 'days');
-        console.log('upcoming thursd: ', upcomingThursday.format('MMMM Do YYYY, h:mm a'));
+  const scheduleOptions = [
+    upcomingTuesday.toDate(),
+    upcomingWednesday.toDate(),
+    upcomingThursday.toDate(),
+  ];
 
-        const scheduleOptions = [upcomingTuesday.toDate(), upcomingWednesday.toDate(), upcomingThursday.toDate()];
-        return scheduleOptions;
-    }
+  return scheduleOptions;
 }
 
 test('create new interview', async t => {
-//   t.plan(6);
+  t.plan(10);
 
   const applicationCreatedRes = await testSetUp(employerToCreate, jobToCreate, jobSeekerToCreate, applicationToCreate);
   const applicationCreated = applicationCreatedRes.body;
-//   t.is(applicationCreatedRes.status, 200);
-  console.log('application from setup: ', applicationCreated);
+  t.is(applicationCreatedRes.status, 200, 'application should be created successfully.');
 
   const generatedScheduleOptions = await generateScheduleOptions();
-    console.log('generated schedule option dates:', generatedScheduleOptions);
 
   const interviewParams = {
-      job: applicationCreated.job,
-      application: applicationCreated._id,
-      jobSeeker: applicationCreated.jobSeeker,
-    //   ScheduleOptions: await generateScheduleOptions(),
-  }
+    job: applicationCreated.job,
+    application: applicationCreated._id,
+    jobSeeker: applicationCreated.jobSeeker,
+    scheduleOptions: generatedScheduleOptions,
+  };
 
-//   create interview
   const interviewCreatedRes = await request(app)
-    .post('/interview')
-    .send({ ...interviewParams, ScheduleOptions: await generateScheduleOptions() });
+    .post('/interview/')
+    .send(interviewParams).catch((err) => console.log(err));
 
-    const interviewCreated = interviewCreatedRes.body;
-    console.log('created interview:', interviewCreated);
-    t.is(interviewCreatedRes.status, 200), 'interview created successfully';
+  const interviewCreated = interviewCreatedRes.body;
+  t.is(interviewCreatedRes.status, 200, 'interview should be created successfully.');
 
-
-  //   t.is(applicationCreated.job.title, jobToCreate.title); // TODO: activate when level one db entry parsing is activated
-  //   t.is(applicationCreated.jobSeeker.email, jobSeekerToCreate.email); // TODO: activate when level one db entry parsing is activated
   t.is(interviewCreated.job, interviewParams.job);
   t.is(interviewCreated.application, interviewParams.application);
   t.is(interviewCreated.jobSeeker, interviewParams.jobSeeker);
-  // schedule options is of type array of dates
-  t.is(interviewCreated.ScheduleOptions, generatedScheduleOptions);
-//   t.is(applicationCreated.yearsOfExperience, applicationToCreate.yearsOfExperience);
-//   t.is(applicationCreated.languagesSpoken, applicationToCreate.languagesSpoken);
-//   t.is(applicationCreated.otherSkills, applicationToCreate.otherSkills);
-//   t.is(applicationCreated.interviewAvailability, applicationToCreate.interviewAvailability);
+  t.true(Array.isArray(interviewCreated.scheduleOptions), 'Scheduled options should be an array.');
+  t.true(interviewCreated.scheduleOptions.length > 2, 'Scheduled options should have at least 3 options.');
+  t.deepEqual(Date.parse(interviewCreated.scheduleOptions[0]), Date.parse(generatedScheduleOptions[0]));
+  t.deepEqual(Date.parse(interviewCreated.scheduleOptions[1]), Date.parse(generatedScheduleOptions[1]));
+  t.deepEqual(Date.parse(interviewCreated.scheduleOptions[2]), Date.parse(generatedScheduleOptions[2]));
 });
 
 test.skip('Fetch an application', async t => {
