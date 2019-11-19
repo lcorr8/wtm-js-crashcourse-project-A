@@ -235,7 +235,7 @@ test('update status submitted: job seeker submits application, application gets 
 });
 
 test('delete an application', async t => {
-  t.plan(2);
+  t.plan(4);
 
   const applicationCreatedRes = await testSetUp(employerToCreate, jobToCreate, jobSeekerToCreate, applicationToCreate);
   const applicationCreated = applicationCreatedRes.body;
@@ -245,4 +245,8 @@ test('delete an application', async t => {
 
   t.is(deletionResponse.status, 200);
   t.is(deletionResponse.text, 'application deleted!');
+  t.is(deletionResponse.ok, true);
+
+  const fetch = await request(app).get(`/application/${applicationCreated._id}/json`);
+  t.is(fetch.status, 404);
 });
