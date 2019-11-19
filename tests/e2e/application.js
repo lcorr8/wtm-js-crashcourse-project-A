@@ -121,6 +121,119 @@ test('update an application', async t => {
   t.deepEqual(updatedApplication.body.status, applicationUpdate.status);
 });
 
+test('update: employer updates application status - declined', async t => {
+  t.plan(2);
+
+  const applicationUpdate = {
+    status: Enums.ApplicationStatus.DECLINED,
+  };
+
+  const applicationCreatedRes = await testSetUp(employerToCreate, jobToCreate, jobSeekerToCreate, applicationToCreate);
+  const applicationCreated = applicationCreatedRes.body;
+
+  const updatedApplication = await request(app)
+    .post(`/application/${applicationCreated._id}/status`)
+    .send(applicationUpdate);
+
+  t.is(updatedApplication.status, 200);
+  t.deepEqual(updatedApplication.body.status, applicationUpdate.status);
+});
+
+test('update: employer updates application status - pending', async t => {
+  t.plan(2);
+
+  const applicationUpdate = {
+    status: Enums.ApplicationStatus.PENDING,
+  };
+
+  const applicationCreatedRes = await testSetUp(employerToCreate, jobToCreate, jobSeekerToCreate, applicationToCreate);
+  const applicationCreated = applicationCreatedRes.body;
+
+  const updatedApplication = await request(app)
+    .post(`/application/${applicationCreated._id}/status`)
+    .send(applicationUpdate);
+
+  t.is(updatedApplication.status, 200);
+  t.deepEqual(updatedApplication.body.status, applicationUpdate.status);
+});
+
+test('update: employer updates application status - accepted', async t => {
+  t.plan(2);
+
+  const applicationUpdate = {
+    status: Enums.ApplicationStatus.ACCEPTED,
+  };
+
+  const applicationCreatedRes = await testSetUp(employerToCreate, jobToCreate, jobSeekerToCreate, applicationToCreate);
+  const applicationCreated = applicationCreatedRes.body;
+
+  const updatedApplication = await request(app)
+    .post(`/application/${applicationCreated._id}/status`)
+    .send(applicationUpdate);
+
+  t.is(updatedApplication.status, 200);
+  t.deepEqual(updatedApplication.body.status, applicationUpdate.status);
+});
+
+test('update: employer updates application status - invalid', async t => {
+  t.plan(3);
+
+  const applicationUpdate = {
+    status: "invalid status",
+  };
+
+  const applicationCreatedRes = await testSetUp(employerToCreate, jobToCreate, jobSeekerToCreate, applicationToCreate);
+  const applicationCreated = applicationCreatedRes.body;
+
+  const updatedApplication = await request(app)
+    .post(`/application/${applicationCreated._id}/status`)
+    .send(applicationUpdate);
+
+  const fetchRes = await request(app)
+    .get(`/application/${applicationCreated._id}/json`);
+  const applicationFetched = fetchRes.body;
+
+  t.is(updatedApplication.status, 200);
+  t.deepEqual(updatedApplication.body, {});
+  t.deepEqual(applicationFetched.status, applicationToCreate.status, 'Application status should not have changed');
+});
+
+test('update status submitted: job seeker submits application, application gets added to job listing, and employer gets notification.', async t => {
+  t.plan(9);
+
+  const applicationCreatedRes = await testSetUp(employerToCreate, jobToCreate, jobSeekerToCreate, applicationToCreate);
+  const applicationCreated = applicationCreatedRes.body;
+
+  const submittedApplicationRes = await request(app)
+    .post(`/application/${applicationCreated._id}/submit`);
+
+  t.is(submittedApplicationRes.status, 200);
+  t.deepEqual(submittedApplicationRes.body.status, Enums.ApplicationStatus.SUBMITTED, 'Application status should be submitted');
+  
+  const fetchedJobRes = await request(app)
+    .get(`/job/${applicationCreated.job}/json`);
+  const jobFetched = fetchedJobRes.body;
+
+  // application gets added job's applications list
+  t.is(fetchedJobRes.status, 200);
+  t.true(jobFetched.applications.length === 1, 'Array should have one item')
+  t.is(jobFetched.applications[0], applicationCreated._id, 'application id should be present in jobs applications list')
+
+  // and right notification sent to employer (has a job id that matches)
+  const fetchedEmployerRes = await request(app)
+    .get(`/employer/${jobFetched.employer}/json`);
+  const employerFetched = fetchedEmployerRes.body;
+
+  const fetchedNotificationRes = await request(app)
+    .get(`/notification/${employerFetched.inbox[0]}/json`);
+  const notificationFetched = fetchedNotificationRes.body;
+
+  t.is(fetchedEmployerRes.status, 200);
+  t.is(fetchedNotificationRes.status, 200);
+  t.true(employerFetched.inbox.length === 1, 'Array should have one item');
+  t.regex(notificationFetched.message, new RegExp(jobFetched._id), 'Notification message should contain the right job id.');
+});
+
 test('delete an application', async t => {
   t.plan(2);
 
