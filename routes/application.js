@@ -3,21 +3,13 @@ const router = express.Router();
 const ApplicationService = require('../services/application-service');
 const JobService = require('../services/job-service');
 
-router.get('/all', async (req, res) => {
+router.get('/all/', async (req, res) => {
   const applications = await ApplicationService.findAll().catch((err) => console.log(err));
-  res.render('applications', { applications });
-});
-router.get('/all/json', async (req, res) => {
-  const applications = await ApplicationService.findAll().catch((err) => console.log(err));
+  if (!applications) res.status(404);
   res.send(applications);
 });
 
-router.get('/:id', async (req, res) => {
-  const application = await ApplicationService.find({ _id: req.params.id }).catch((err) => console.log(err));
-  if (!application) res.status(404);
-  res.render('application', { application });
-});
-router.get('/:id/json', async (req, res) => {
+router.get('/:id/', async (req, res) => {
   const application = await ApplicationService.find({ _id: req.params.id }).catch((err) => console.log(err));
   if (!application) res.status(404);
   res.send(application);
@@ -39,6 +31,7 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   const application = await ApplicationService.updateOne(req.params.id, req.body).catch((err) => console.log(err));
+  if (!application) res.status(404);
   res.send(application);
   console.log(application);
 });
@@ -49,7 +42,7 @@ router.post('/:id/status', async (req, res) => {
   const { status } = req.body;
 
   const updatedApplication = await ApplicationService.setApplicationStatus(id, status).catch((err) => console.log(err));
-  console.log('updated application: ', updatedApplication);
+  if (!updatedApplication) res.status(400);
   res.send(updatedApplication);
 });
 // axios.post('/application/:id/status', {status: 'declined'}).then(console.log);
@@ -61,14 +54,14 @@ router.post('/:id/submit', async (req, res) => {
   const application = await ApplicationService.find(req.params.id).catch((err) => console.log(err));
   const job = await JobService.find(application.job).catch((err) => console.log(err));
   const updatedApplication = await ApplicationService.submitApplication(application, job);
-
+  if (!updatedApplication) res.status(404);
   res.send(updatedApplication);
 });
 // axios.post('/application/5dc5c64c6e56120e008f5c1c/submit').then(console.log);
 
 router.delete('/:id', async (req, res) => {
   const application = await ApplicationService.deleteOne({ _id: req.params.id }).catch((err) => console.log(err));
-  // if (!application) res.send(404)
+  if (!application) res.send(404);
   res.send('application deleted!');
 });
 
