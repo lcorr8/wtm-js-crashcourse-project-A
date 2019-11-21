@@ -3,7 +3,6 @@ const router = express.Router();
 const JobService = require('../services/job-service');
 const EmployerService = require('../services/employer-service');
 
-
 router.get('/?', async (req, res) => {
   const { query } = req;
   const jobs = await JobService.findAll(query);
