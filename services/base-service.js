@@ -16,7 +16,7 @@ module.exports = class Service {
   }
 
   async findAll(query) {
-    return this.model.find(query);
+    return this.model.find(query).sort({ _id: -1 });
   }
 
   async updateOne(id, update) {
