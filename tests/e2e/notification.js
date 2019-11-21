@@ -31,7 +31,7 @@ test('Fetch a notification', async t => {
     .send(NotificationToCreate)).body;
   
     const fetchRes = await request(app)
-    .get(`/notification/${notificationCreated._id}/json`);
+    .get(`/notification/${notificationCreated._id}`);
 
   const notificationFetched = fetchRes.body;
 
@@ -46,7 +46,7 @@ test('Fetch all notifications', async t => {
     .post('/notification')
     .send(NotificationToCreate)).body;
 
-  const fetchRes = await request(app).get('/notification/all/json');
+  const fetchRes = await request(app).get('/notification/all');
 
   t.is(fetchRes.status, 200);
   t.true(Array.isArray(fetchRes.body), 'Body should be an array');

@@ -3,7 +3,6 @@ const router = express.Router();
 const JobService = require('../services/job-service');
 const EmployerService = require('../services/employer-service');
 
-
 router.get('/?', async (req, res) => {
   const { query } = req;
   const jobs = await JobService.findAll(query);
@@ -18,19 +17,13 @@ router.get('/?', async (req, res) => {
 
 router.get('/all', async (req, res) => {
   const jobs = await JobService.findAll().catch((err) => console.log(err));
-  res.render('jobs', { jobs });
-});
-router.get('/all/json', async (req, res) => {
-  const jobs = await JobService.findAll().catch((err) => console.log(err));
+  if (!jobs) res.status(404);
   res.send(jobs);
 });
 
 router.get('/:id', async (req, res) => {
   const job = await JobService.find({ _id: req.params.id }).catch((err) => console.log(err));
-  res.render('job', { job });
-});
-router.get('/:id/json', async (req, res) => {
-  const job = await JobService.find({ _id: req.params.id }).catch((err) => console.log(err));
+  if (!job) res.status(404);
   res.send(job);
 });
 
@@ -41,6 +34,7 @@ router.post('/', async (req, res) => {
   employer.jobs.push(job);
   await employer.save();
 
+  if (!job) res.status(404);
   res.send(job);
   // const updatedEmployer = await EmployerService.find(job.employer);
   // console.log(req.body);
@@ -50,12 +44,13 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   const job = await JobService.updateOne(req.params.id, req.body).catch((err) => console.log(err));
+  if (!job) res.status(404);
   res.send(job);
-  console.log(req.body);
 });
 
 router.delete('/:id', async (req, res) => {
   const job = await JobService.deleteOne({ _id: req.params.id }).catch((err) => console.log(err));
+  if (!job) res.status(404);
   res.send('job deleted!');
 });
 

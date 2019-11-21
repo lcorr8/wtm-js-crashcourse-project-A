@@ -6,19 +6,13 @@ const Enums = require('../helpers/enums');
 
 router.get('/all', async (req, res) => {
   const interviews = await InterviewService.findAll().catch((err) => console.log(err));
-  res.render('interviews', { interviews });
-});
-router.get('/all/json', async (req, res) => {
-  const interviews = await InterviewService.findAll().catch((err) => console.log(err));
+  if (!interviews) res.status(404);
   res.send(interviews);
 });
 
 router.get('/:id', async (req, res) => {
   const interview = await InterviewService.find({ _id: req.params.id }).catch((err) => console.log(err));
-  res.render('interview', { interview });
-});
-router.get('/:id/json', async (req, res) => {
-  const interview = await InterviewService.find({ _id: req.params.id }).catch((err) => console.log(err));
+  if (!interview) res.status(404);
   res.send(interview);
 });
 
@@ -28,6 +22,7 @@ router.get('/:id/slot/:number', async (req, res) => {
   const updatedInterview = await InterviewService.acceptAndFinalizeTime(interview, req.params.number);
   const updatedApplication = await ApplicationService.updateOne(interview.application, { status: Enums.ApplicationStatus.INTERVIEW_ACCEPTED }).catch((err) => console.log(err));
   console.log('updated application: ', updatedApplication);
+  if (!updatedInterview) res.status(404);
   res.send(updatedInterview);
 });
 // axios.get('/interview/5dc5fe1bb86c5716604c0a46/slot/1').then(console.log);
@@ -35,18 +30,20 @@ router.get('/:id/slot/:number', async (req, res) => {
 // employer offers an interview, interview added to application and application status updated
 router.post('/', async (req, res) => {
   const interview = await ApplicationService.addInterview(req.body);
+  if (!interview) res.status(404);
   res.send(interview);
 });
 // axios.post('/interview', { application: "5dc5eb18ef8725127c365f4a", scheduleOptions: [new Date("december 3, 2019 11:30"), new Date("december 4, 2019 15:30"), new Date("december 5, 2019 17:30")] }).then(console.log);
 
 router.put('/:id', async (req, res) => {
   const interview = await InterviewService.updateOne(req.params.id, req.body).catch((err) => console.log(err));
+  if (!interview) res.status(404);
   res.send(interview);
-  console.log(req.body);
 });
 
 router.delete('/:id', async (req, res) => {
   const interview = await InterviewService.deleteOne({ _id: req.params.id }).catch((err) => console.log(err));
+  if (!interview) res.status(404);
   res.send('interview deleted!');
 });
 

@@ -27,7 +27,7 @@ test('Fetch a job seeker', async t => {
     .send(jobSeekerToCreate)).body;
 
   const fetchRes = await request(app)
-    .get(`/job-seeker/${jobSeekerCreated._id}/json`);
+    .get(`/job-seeker/${jobSeekerCreated._id}`);
 
   const jobSeekerFetched = fetchRes.body;
 
@@ -42,7 +42,7 @@ test('Fetch all job seekers', async t => {
     .post('/job-seeker')
     .send(jobSeekerToCreate);
 
-  const fetchRes = await request(app).get('/job-seeker/all/json');
+  const fetchRes = await request(app).get('/job-seeker/all');
 
   t.is(fetchRes.status, 200);
   t.true(Array.isArray(fetchRes.body), 'Body should be an array');
