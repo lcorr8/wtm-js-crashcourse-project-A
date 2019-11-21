@@ -80,6 +80,16 @@ async function generateScheduleOptions(day = 2) {
   return scheduleOptions;
 }
 
+test('can generate an array of 3 different schedule options', async t => {
+  t.plan(3);
+
+  const scheduleOptionsArray = await generateScheduleOptions(2);
+
+  t.true(Array.isArray(scheduleOptionsArray), 'Scheduled options should be an array.');
+  t.true(scheduleOptionsArray.length === 3, 'Scheduled options should have at least 3 options.');
+  t.true(scheduleOptionsArray[0] instanceof Date, 'Options should be of type date');
+});
+
 test('create new interview', async t => {
   t.plan(10);
 
@@ -136,7 +146,7 @@ test('Fetch an interview by id', async t => {
   t.is(interviewCreatedRes.status, 200, 'interview should be created successfully.');
 
   const fetchRes = await request(app)
-    .get(`/interview/${interviewCreated._id}/json`);
+    .get(`/interview/${interviewCreated._id}`);
   const interviewFetched = fetchRes.body;
 
   t.is(fetchRes.status, 200, 'Interview should be fetched successfully.');
@@ -165,7 +175,7 @@ test('Fetch all interviews', async t => {
   t.is(interviewCreatedRes.status, 200, 'interview should be created successfully.');
 
 
-  const fetchRes = await request(app).get('/interview/all/json');
+  const fetchRes = await request(app).get('/interview/all');
 
   t.is(fetchRes.status, 200, 'Interviews should be fetched successfully.');
   t.true(Array.isArray(fetchRes.body), 'Body should be an array');

@@ -83,7 +83,7 @@ test('Fetch an application', async t => {
   const applicationCreated = applicationCreatedRes.body;
 
   const fetchRes = await request(app)
-    .get(`/application/${applicationCreated._id}/json`);
+    .get(`/application/${applicationCreated._id}`);
 
   const applicationFetched = fetchRes.body;
 
@@ -96,7 +96,7 @@ test('Fetch all applications', async t => {
 
   await testSetUp(employerToCreate, jobToCreate, jobSeekerToCreate, applicationToCreate);
 
-  const fetchRes = await request(app).get('/application/all/json');
+  const fetchRes = await request(app).get('/application/all');
 
   t.is(fetchRes.status, 200);
   t.true(Array.isArray(fetchRes.body), 'Body should be an array');
@@ -190,10 +190,10 @@ test('update: employer updates application status - invalid', async t => {
     .send(applicationUpdate);
 
   const fetchRes = await request(app)
-    .get(`/application/${applicationCreated._id}/json`);
+    .get(`/application/${applicationCreated._id}`);
   const applicationFetched = fetchRes.body;
 
-  t.is(updatedApplication.status, 200);
+  t.is(updatedApplication.status, 400);
   t.deepEqual(updatedApplication.body, {});
   t.deepEqual(applicationFetched.status, applicationToCreate.status, 'Application status should not have changed');
 });
@@ -211,7 +211,7 @@ test('update status submitted: job seeker submits application, application gets 
   t.deepEqual(submittedApplicationRes.body.status, Enums.ApplicationStatus.SUBMITTED, 'Application status should be submitted');
   
   const fetchedJobRes = await request(app)
-    .get(`/job/${applicationCreated.job}/json`);
+    .get(`/job/${applicationCreated.job}`);
   const jobFetched = fetchedJobRes.body;
 
   // application gets added job's applications list
@@ -221,11 +221,11 @@ test('update status submitted: job seeker submits application, application gets 
 
   // and right notification sent to employer (has a job id that matches)
   const fetchedEmployerRes = await request(app)
-    .get(`/employer/${jobFetched.employer}/json`);
+    .get(`/employer/${jobFetched.employer}`);
   const employerFetched = fetchedEmployerRes.body;
 
   const fetchedNotificationRes = await request(app)
-    .get(`/notification/${employerFetched.inbox[0]}/json`);
+    .get(`/notification/${employerFetched.inbox[0]}`);
   const notificationFetched = fetchedNotificationRes.body;
 
   t.is(fetchedEmployerRes.status, 200);
@@ -247,6 +247,6 @@ test('delete an application', async t => {
   t.is(deletionResponse.text, 'application deleted!');
   t.is(deletionResponse.ok, true);
 
-  const fetch = await request(app).get(`/application/${applicationCreated._id}/json`);
+  const fetch = await request(app).get(`/application/${applicationCreated._id}`);
   t.is(fetch.status, 404);
 });
