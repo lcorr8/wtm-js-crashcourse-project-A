@@ -28,11 +28,11 @@ const mutations = {
 
 const actions = {
   async fetchJobs({ commit }) {
-    const res = await axios.get('http://localhost:3000/job/all/json');
+    const res = await axios.get('http://localhost:3000/job/all');
     commit(REQUEST_SUCCESS, res.data);
   },
   async fetchJob({ commit }, id) {
-    const res = await axios.get(`http://localhost:3000/job/${id}/json`);
+    const res = await axios.get(`http://localhost:3000/job/${id}`);
 
     console.log(res.data);
     commit(FETCH_JOB, res.data);
