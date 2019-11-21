@@ -4,6 +4,7 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const axios = require('axios').default;
+const cors = require('cors');
 
 const EmployerRoutes = require('./routes/employer');
 const NotificationRoutes = require('./routes/notification');
@@ -14,6 +15,7 @@ const JobSeekerRoutes = require('./routes/job-seeker');
 
 require('./database-connection');
 
+app.use(cors());
 app.set('view engine', 'pug');
 app.use(bodyParser.json());
 
