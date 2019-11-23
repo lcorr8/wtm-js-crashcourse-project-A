@@ -1,6 +1,7 @@
 <script>
 import { mapActions, mapState } from 'vuex';
 import Job from '@/components/Job.vue';
+import JobDetails from '@/components/JobDetails.vue';
 
 export default {
   name: 'jobs',
@@ -9,6 +10,7 @@ export default {
   },
   components: {
     Job,
+    JobDetails,
   },
   computed: {
     ...mapState({
@@ -18,6 +20,10 @@ export default {
   },
   methods: {
     ...mapActions(['fetchJobs', 'addLike']),
+    goToJobdetails(id) {
+      console.log(`opening/closing the job details id: ${id}`);
+      // this.$router.push({ name: 'job', params: { id } });
+    },
   },
 };
 </script>
@@ -28,10 +34,13 @@ div
   button(@click="addLike") Like!
   p(:likes="likes") Number of likes: {{likes}}
   div(v-if="jobs.length")
-    p Here are the jobs:
     div.jobs-list
       div.job(v-for="job in jobs")
-        job.jobs-list(:job="job")
+        div(@click="goToJobdetails(job._id)")
+          job(:job="job")
+          div.expand(v-if="true")
+            p Hello i'm content that expands
+            job-details(:job="job")
   div(v-else)
     p There's no one yet :(
 </template>
@@ -42,5 +51,9 @@ div
 }
 .job {
   margin: 30px;
+}
+.expand {
+  background-color: blue;
+  color: white;
 }
 </style>

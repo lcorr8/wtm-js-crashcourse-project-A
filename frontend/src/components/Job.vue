@@ -8,6 +8,7 @@ export default {
 <template lang="pug">
 div.wrapper
   div.main-text
+    p Job summary view
     h2 {{job.title}}
     p {{job.description}}
   div.top-left date
@@ -15,6 +16,7 @@ div.wrapper
   div.bottom-left {{job.zipcode}}
   div.top-right {{job.category}}
   div.bottom-right {{job.jobType}}
+  <router-link :to="`/job/${job._id}`">See more details</router-link>
 </template>
 
 <style>

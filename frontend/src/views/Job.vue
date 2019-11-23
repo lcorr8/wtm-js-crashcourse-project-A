@@ -1,10 +1,15 @@
 <script>
+/* eslint-disable no-unused-vars */
 import { mapState, mapActions } from 'vuex';
+import JobDetails from '@/components/JobDetails.vue';
 
 export default {
   name: 'job',
   created() {
     this.fetchJob(this.$route.params.id);
+  },
+  components: {
+    JobDetails,
   },
   computed: {
     ...mapState({
@@ -19,14 +24,9 @@ export default {
 
 <template lang="pug">
 div
-  h1 Title: {{job.title}}
-  h2 Description: {{job.description}}
-  p id: {{job._id}}
-  p Employer: {{job.employer}}
-  p Zipcode: {{job.zipcode}}
-  p Category: {{job.category}}
-  p Job type: {{job.jobType}}
-  p Tips: {{job.tips}}
+  h1 Job Details View, job below:
+  div
+    job-details(:job="job")
 </template>
 
 <style>
