@@ -13,7 +13,11 @@ const state = {
 
 const mutations = {
   [REQUEST_SUCCESS](state, data) {
-    state.data = data;
+    const newData = [];
+    data.forEach((job) => {
+      newData.push({ ...job, display: false });
+    });
+    state.data = newData;
   },
   [ADD_LIKES](state) {
     // eslint-disable-next-line no-plusplus

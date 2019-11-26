@@ -20,8 +20,8 @@ export default {
   },
   methods: {
     ...mapActions(['fetchJobs', 'addLike']),
-    goToJobdetails(id) {
-      console.log(`opening/closing the job details id: ${id}`);
+    goToJobdetails(job) {
+      console.log('opening/closing the job details for job:', job);
       // this.$router.push({ name: 'job', params: { id } });
     },
   },
@@ -36,9 +36,9 @@ div
   div(v-if="jobs.length")
     div.jobs-list
       div.job(v-for="job in jobs")
-        div(@click="goToJobdetails(job._id)")
+        div(@click="job.display = !job.display")
           job(:job="job")
-          div.expand(v-if="true")
+          div.expand(v-if="job.display")
             p Hello i'm content that expands
             job-details(:job="job")
   div(v-else)
